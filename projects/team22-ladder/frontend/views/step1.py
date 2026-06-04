@@ -1,19 +1,37 @@
 import streamlit as st
 import requests
 import os
+from openai import OpenAI
 
 MOCK_INGREDIENTS_FROM_IMAGE = ["김치", "두부", "콩나물", "돼지고기", "달걀", "대파"]
 
-INGREDIENT_EN = {
-    "김치": "kimchi", "두부": "tofu", "콩나물": "bean sprouts", "돼지고기": "pork",
-    "달걀": "egg", "대파": "green onion", "양파": "onion", "감자": "potato",
-    "고구마": "sweet potato", "당근": "carrot", "버섯": "mushroom", "시금치": "spinach",
-    "닭고기": "chicken", "소고기": "beef", "새우": "shrimp", "오징어": "squid",
-    "우유": "milk", "치즈": "cheese", "버터": "butter", "라면": "ramen noodles",
-    "밥": "cooked rice", "떡": "rice cake", "냉동만두": "frozen dumplings",
-    "고추": "chili pepper", "마늘": "garlic", "생강": "ginger", "고구마": "sweet potato",
-    "호박": "zucchini", "가지": "eggplant", "브로콜리": "broccoli", "양배추": "cabbage",
-}
+
+@st.cache_data(show_spinner=False)
+def translate_to_english(name: str) -> str:
+    key = os.getenv("UPSTAGE_API_KEY", "")
+    if not key:
+        return name
+    try:
+        client = OpenAI(api_key=key, base_url="https://api.upstage.ai/v1")
+        res = client.chat.completions.create(
+            model="solar-mini",
+            messages=[
+                {"role": "system", "content": (
+                    "Convert a Korean food ingredient name into a short English phrase "
+                    "for searching stock photos on Unsplash. "
+                    "Show the raw ingredient itself, not a cooked dish or a live animal. "
+                    "Use internationally recognizable English terms that are commonly photographed. "
+                    "For Korean-specific ingredients, use a descriptive Western equivalent. "
+                    "Examples: 돼지고기 → raw pork slices, 두부 → fresh tofu block, 달걀 → fresh eggs, "
+                    "김치 → fermented cabbage, 대파 → green onion, 된장 → soybean paste, 고추장 → red chili paste. "
+                    "Reply with only the search phrase, nothing else."
+                )},
+                {"role": "user", "content": name},
+            ],
+        )
+        return res.choices[0].message.content.strip()
+    except Exception:
+        return name
 
 INGREDIENT_EMOJI = {
     "김치": "🥬", "두부": "🧊", "콩나물": "🌱", "돼지고기": "🥩", "달걀": "🥚",
@@ -39,12 +57,11 @@ def fetch_unsplash_image(query: str) -> str | None:
     key = os.getenv("UNSPLASH_ACCESS_KEY", "")
     if not key:
         return None
-    en_name = INGREDIENT_EN.get(query, query)
-    search_query = f"{en_name} food ingredient"
+    search_query = translate_to_english(query)
     try:
         res = requests.get(
             "https://api.unsplash.com/search/photos",
-            params={"query": search_query, "per_page": 1, "orientation": "squarish", "content_filter": "high"},
+            params={"query": search_query, "per_page": 1, "orientation": "squarish"},
             headers={"Authorization": f"Client-ID {key}"},
             timeout=3,
         )
