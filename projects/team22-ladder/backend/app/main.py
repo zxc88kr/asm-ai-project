@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException
+from fastapi import UploadFile
+from fastapi import File
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
@@ -7,7 +9,14 @@ from app.recipe_agent import RecipeGenerationError, generate_recipes
 
 load_dotenv()
 
-app = FastAPI(title="Ladder API", version="0.1.0")
+import tempfile
+
+from app.graph.ingredient_graph import graph
+
+app = FastAPI(
+    title="Ladder API",
+    version="0.1.0"
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,13 +25,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok"
+    }
 
 
-class RecipeGenerateRequest(BaseModel):
+@app.post("/ingredients/image")
+async def ingredient_image(
+    file: UploadFile = File(...)
+):
+
+    temp = tempfile.NamedTemporaryFile(
+        delete=False,
+        suffix=".jpg"
+    )
+
+    temp.write(
+        await file.read()
+    )
+
+    result = graph.invoke(
+        {
+            "image_path": temp.name,
+            "ingredients": []
+        }
+    )
+
+    return result
+  
+  class RecipeGenerateRequest(BaseModel):
     ingredients: list[str] = Field(default_factory=list)
     required_ingredients: list[str] = Field(default_factory=list)
     expiring_ingredients: list[str] = Field(default_factory=list)

@@ -105,7 +105,23 @@ def render():
                 img_cols[i % 4].image(f, use_container_width=True)
             if st.button("재료 분석하기", type="primary"):
                 with st.spinner("재료를 분석하는 중..."):
-                    _add_ingredients(MOCK_INGREDIENTS_FROM_IMAGE)
+                    file = uploaded_files[0]
+                    response = requests.post(
+                        "http://localhost:8000/ingredients/image",
+                        files={
+                            "file": (
+                                file.name,
+                                file.getvalue(),
+                                file.type
+                            )
+                        }
+                    )
+                    ingredients = response.json()[
+                        "ingredients"
+                    ]
+                    _add_ingredients(
+                        ingredients
+                    )
                 st.rerun()
 
     with tab_text:
