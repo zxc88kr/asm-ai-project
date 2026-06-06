@@ -1,0 +1,8 @@
+{
+  "ingredients": ["김치", "두부", "대파", "달걀"],
+  "required_ingredients": ["김치"],
+  "expiring_ingredients": ["두부"],
+  "sauces": ["간장", "참기름", "고추장", "식용유"],
+  "tools": ["가스레인지", "프라이팬", "냄비", "전자레인지"],
+  "extra_ingredients": ["밥"]
+}

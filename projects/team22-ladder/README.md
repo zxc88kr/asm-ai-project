@@ -16,7 +16,19 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+cp ../.env.example .env
 uvicorn app.main:app --reload
+```
+
+`.env`에 `UPSTAGE_API_KEY` 값을 직접 입력해야 레시피 생성 Agent가 동작합니다.
+
+**Recipe Agent API 테스트**
+
+```bash
+cd backend
+curl -X POST http://localhost:8000/recipes/generate \
+  -H "Content-Type: application/json" \
+  -d @examples/recipe_request.json
 ```
 
 **Frontend** (새 터미널)
@@ -26,6 +38,7 @@ cd frontend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+cp example.env .env
 streamlit run app.py
 ```
 
