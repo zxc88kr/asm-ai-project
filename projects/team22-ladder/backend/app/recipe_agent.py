@@ -12,11 +12,17 @@ class RecipeGenerationError(RuntimeError):
     pass
 
 
+MAX_RETRY = 2
+
+
 class RecipeState(TypedDict, total=False):
     raw_input: dict[str, Any]
     normalized_input: dict[str, list[str]]
     llm_text: str
     recipes: dict[str, list[dict[str, Any]]]
+    validated_recipes: dict[str, list[dict[str, Any]]]
+    final_recipes: dict[str, list[dict[str, Any]]]
+    retry_count: int
 
 
 RECIPE_CATEGORIES = ("beginner", "microwave")
@@ -72,7 +78,7 @@ COMMON_RECIPE_NAMES = {
 def generate_recipes(payload: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     graph = _build_graph()
     result = graph.invoke({"raw_input": payload})
-    return result["recipes"]
+    return result["final_recipes"]
 
 
 def _build_graph():
@@ -80,12 +86,29 @@ def _build_graph():
     graph.add_node("normalize_ingredients", _normalize_ingredients)
     graph.add_node("generate_recipe_candidates", _generate_recipe_candidates)
     graph.add_node("validate_recipes", _validate_recipes)
+    graph.add_node("llm_validate_recipes", _llm_validate_recipes)
+    graph.add_node("llm_select_final_recipes", _llm_select_final_recipes)
 
     graph.set_entry_point("normalize_ingredients")
     graph.add_edge("normalize_ingredients", "generate_recipe_candidates")
     graph.add_edge("generate_recipe_candidates", "validate_recipes")
-    graph.add_edge("validate_recipes", END)
+    graph.add_edge("validate_recipes", "llm_validate_recipes")
+    graph.add_edge("llm_validate_recipes", "llm_select_final_recipes")
+    graph.add_conditional_edges(
+        "llm_select_final_recipes",
+        _route_after_selection,
+        {"retry": "generate_recipe_candidates", "done": END},
+    )
     return graph.compile()
+
+
+def _route_after_selection(state: RecipeState) -> str:
+    final = state.get("final_recipes", {})
+    has_recipes = any(final.get(cat) for cat in RECIPE_CATEGORIES)
+    retry_count = state.get("retry_count", 0)
+    if not has_recipes and retry_count < MAX_RETRY:
+        return "retry"
+    return "done"
 
 
 def _normalize_ingredients(state: RecipeState) -> RecipeState:
@@ -180,6 +203,172 @@ def _validate_recipes(state: RecipeState) -> RecipeState:
         raise RecipeGenerationError("생성된 레시피 후보가 없습니다.")
 
     return {**state, "recipes": recipes}
+
+
+def _llm_validate_recipes(state: RecipeState) -> RecipeState:
+    """Agent 3: LLM이 각 레시피가 보유 재료로 실제로 만들 수 있는지 검증한다."""
+    api_key = os.getenv("UPSTAGE_API_KEY", "").strip()
+    if not api_key:
+        return {**state, "validated_recipes": state["recipes"]}
+
+    llm = ChatOpenAI(
+        api_key=api_key,
+        base_url="https://api.upstage.ai/v1",
+        model=os.getenv("UPSTAGE_SOLAR_MODEL", "solar-pro3"),
+        temperature=0.0,
+    )
+
+    norm = state["normalized_input"]
+    owned = list(set(
+        norm["ingredients"]
+        + norm["required_ingredients"]
+        + norm["expiring_ingredients"]
+        + norm["sauces"]
+        + norm["extra_ingredients"]
+    ))
+
+    candidates = state["recipes"]
+    all_recipes = []
+    for category, items in candidates.items():
+        for recipe in items:
+            all_recipes.append({"category": category, **recipe})
+
+    if not all_recipes:
+        return {**state, "validated_recipes": candidates}
+
+    prompt = f"""
+너는 레시피 검증 Agent다.
+사용자가 보유한 재료와 레시피 후보 목록이 주어진다.
+각 레시피에 대해 missing_ingredients에 있는 재료를 제외하고,
+보유 재료만으로 실제로 요리를 완성할 수 있는지 판단한다.
+
+판단 기준:
+- missing_ingredients가 없으면 "valid"
+- missing_ingredients가 있어도 핵심 재료(예: 밥, 물, 소금 등 구하기 쉬운 것)만 없으면 "valid"
+- 레시피의 핵심 재료가 누락되어 요리 자체가 불가능하면 "invalid"
+- 레시피 이름에 재료명을 억지로 조합한 비현실적인 메뉴(예: 계란두부김치찜)면 "invalid"
+
+보유 재료: {json.dumps(owned, ensure_ascii=False)}
+레시피 후보:
+{json.dumps(all_recipes, ensure_ascii=False, indent=2)}
+
+반드시 아래 JSON 배열만 출력하고 설명을 붙이지 마라.
+각 항목은 레시피 후보 순서와 동일하게 "valid" 또는 "invalid"만 포함한다.
+[{{"name": "레시피명", "verdict": "valid"}}, ...]
+""".strip()
+
+    try:
+        response = llm.invoke([HumanMessage(content=prompt)])
+        verdicts = _parse_verdict_list(response.content, all_recipes)
+    except Exception:
+        return {**state, "validated_recipes": candidates}
+
+    validated: dict[str, list[dict[str, Any]]] = {cat: [] for cat in candidates}
+    for recipe, verdict in zip(all_recipes, verdicts):
+        if verdict == "valid":
+            category = recipe["category"]
+            entry = {k: v for k, v in recipe.items() if k != "category"}
+            validated[category].append(entry)
+
+    # 검증 후 카테고리가 비면 원본 후보를 그대로 사용 (fallback)
+    for category in candidates:
+        if not validated[category]:
+            validated[category] = candidates[category]
+
+    return {**state, "validated_recipes": validated}
+
+
+def _llm_select_final_recipes(state: RecipeState) -> RecipeState:
+    """Agent 4: 검증된 후보 중 사용자 재료 활용도·다양성 기준으로 최종 레시피를 선정한다."""
+    api_key = os.getenv("UPSTAGE_API_KEY", "").strip()
+    if not api_key:
+        return {**state, "final_recipes": state["validated_recipes"]}
+
+    llm = ChatOpenAI(
+        api_key=api_key,
+        base_url="https://api.upstage.ai/v1",
+        model=os.getenv("UPSTAGE_SOLAR_MODEL", "solar-pro3"),
+        temperature=0.0,
+    )
+
+    norm = state["normalized_input"]
+    required = norm["required_ingredients"]
+    expiring = norm["expiring_ingredients"]
+    owned = set(
+        norm["ingredients"] + required + expiring
+        + norm["sauces"] + norm["extra_ingredients"]
+    )
+
+    candidates = state["validated_recipes"]
+    all_recipes = []
+    for category, items in candidates.items():
+        for recipe in items:
+            all_recipes.append({"category": category, **recipe})
+
+    if not all_recipes:
+        return {**state, "final_recipes": candidates}
+
+    prompt = f"""
+너는 레시피 최종 선정 Agent다.
+검증된 레시피 후보 중에서 카테고리별로 최대 {RECIPES_PER_CATEGORY}개를 선정한다.
+
+선정 기준 (우선순위 순):
+1. required_ingredients({json.dumps(required, ensure_ascii=False)})를 사용하는 레시피 우선
+2. expiring_ingredients({json.dumps(expiring, ensure_ascii=False)})를 사용하는 레시피 우선
+3. missing_ingredients가 적을수록 우선
+4. 카테고리 내 레시피 간 중복 재료가 적어 다양성이 높을수록 우선
+
+보유 재료: {json.dumps(list(owned), ensure_ascii=False)}
+레시피 후보:
+{json.dumps(all_recipes, ensure_ascii=False, indent=2)}
+
+반드시 아래 JSON 객체만 출력하고 설명을 붙이지 마라.
+카테고리별로 선정된 레시피 이름 목록을 반환한다.
+{{
+  "beginner": ["선정된 레시피명1", "선정된 레시피명2"],
+  "microwave": ["선정된 레시피명1"]
+}}
+존재하는 카테고리 키만 포함한다.
+""".strip()
+
+    retry_count = state.get("retry_count", 0)
+
+    try:
+        response = llm.invoke([HumanMessage(content=prompt)])
+        selected_names = _parse_json_object(response.content)
+        if not isinstance(selected_names, dict):
+            raise ValueError("unexpected format")
+    except Exception:
+        return {**state, "final_recipes": candidates, "retry_count": retry_count}
+
+    final: dict[str, list[dict[str, Any]]] = {}
+    for category, items in candidates.items():
+        names = selected_names.get(category, [])
+        if not isinstance(names, list) or not names:
+            final[category] = items[:RECIPES_PER_CATEGORY]
+            continue
+        ordered = [r for name in names for r in items if r["name"] == name]
+        selected_set = {r["name"] for r in ordered}
+        fallback = [r for r in items if r["name"] not in selected_set]
+        final[category] = (ordered + fallback)[:RECIPES_PER_CATEGORY]
+
+    has_recipes = any(final.get(cat) for cat in RECIPE_CATEGORIES)
+    new_retry_count = retry_count + 1 if not has_recipes else retry_count
+    return {**state, "final_recipes": final, "retry_count": new_retry_count}
+
+
+def _parse_verdict_list(text: str, recipes: list[dict[str, Any]]) -> list[str]:
+    try:
+        parsed = _parse_json_object(text)
+        if isinstance(parsed, list):
+            return [
+                str(item.get("verdict", "valid")).lower()
+                if isinstance(item, dict) else "valid"
+                for item in parsed
+            ]
+    except Exception:
+        pass
+    return ["valid"] * len(recipes)
 
 
 def _normalize_recipe(item: dict[str, Any], owned: set[str]) -> dict[str, Any]:

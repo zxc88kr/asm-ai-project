@@ -54,8 +54,9 @@ async def ingredient_image(
     )
 
     return result
-  
-  class RecipeGenerateRequest(BaseModel):
+
+
+class RecipeGenerateRequest(BaseModel):
     ingredients: list[str] = Field(default_factory=list)
     required_ingredients: list[str] = Field(default_factory=list)
     expiring_ingredients: list[str] = Field(default_factory=list)
