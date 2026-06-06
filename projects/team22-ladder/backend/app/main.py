@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from app.recipe_agent import RecipeGenerationError, generate_recipes
+from app.agents.trendy_recipe_agent import TrendyRecipeGenerationError, generate_trendy_recipes
 
 load_dotenv()
 
@@ -54,8 +55,9 @@ async def ingredient_image(
     )
 
     return result
-  
-  class RecipeGenerateRequest(BaseModel):
+
+
+class RecipeGenerateRequest(BaseModel):
     ingredients: list[str] = Field(default_factory=list)
     required_ingredients: list[str] = Field(default_factory=list)
     expiring_ingredients: list[str] = Field(default_factory=list)
@@ -75,5 +77,20 @@ def recipes_generate(request: RecipeGenerateRequest):
         raise HTTPException(status_code=503, detail=message) from exc
     except Exception as exc:
         raise HTTPException(status_code=503, detail=f"레시피 생성 중 오류가 발생했습니다: {exc}") from exc
+
+    return recipes
+
+
+@app.post("/recipes/generate/trendy")
+def recipes_generate_trendy(request: RecipeGenerateRequest):
+    try:
+        recipes = generate_trendy_recipes(request.model_dump())
+    except TrendyRecipeGenerationError as exc:
+        message = str(exc)
+        if "재료가 없습니다" in message:
+            raise HTTPException(status_code=400, detail=message) from exc
+        raise HTTPException(status_code=503, detail=message) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"트렌드 레시피 생성 중 오류가 발생했습니다: {exc}") from exc
 
     return recipes

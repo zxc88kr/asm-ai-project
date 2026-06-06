@@ -11,3 +11,4 @@ langchain-core
 google-generativeai
 python-multipart
 Pillow
+ddgs>=7.0.0
