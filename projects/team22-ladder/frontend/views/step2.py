@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import requests
 
 SAUCE_OPTIONS = ["소금", "간장", "식용유", "고추장", "된장", "참기름", "굴소스", "설탕", "식초", "기타"]
 TOOL_OPTIONS = ["전자레인지", "가스레인지", "에어프라이어", "오븐", "냄비", "프라이팬", "기타"]
@@ -110,50 +112,40 @@ def render():
             st.error("재료를 먼저 입력해주세요!")
         else:
             with st.spinner("레시피를 생성하는 중..."):
-                st.session_state.recipes = _mock_recipes()
-            st.session_state.step = 3
-            st.rerun()
+                recipes, error = _generate_recipes()
+            if error:
+                st.error(error)
+            else:
+                st.session_state.recipes = recipes
+                st.session_state.step = 3
+                st.rerun()
 
 
-def _mock_recipes():
-    return {
-        "beginner": [
-            {
-                "name": "김치볶음밥",
-                "difficulty": 1,
-                "time": "15분",
-                "summary": "김치와 밥을 팬에 볶아 만드는 간단한 볶음밥",
-                "ingredients": ["김치", "밥", "식용유", "간장"],
-            },
-            {
-                "name": "두부된장국",
-                "difficulty": 1,
-                "time": "20분",
-                "summary": "두부와 된장으로 끓이는 구수한 국",
-                "ingredients": ["두부", "된장", "대파", "소금"],
-            },
-            {
-                "name": "달걀후라이",
-                "difficulty": 1,
-                "time": "5분",
-                "summary": "프라이팬에 달걀을 구워 만드는 기본 요리",
-                "ingredients": ["달걀", "식용유", "소금"],
-            },
-        ],
-        "microwave": [
-            {
-                "name": "전자레인지 달걀찜",
-                "difficulty": 1,
-                "time": "10분",
-                "summary": "그릇에 달걀물을 만들어 전자레인지로 찌는 요리",
-                "ingredients": ["달걀", "소금", "참기름"],
-            },
-            {
-                "name": "두부 전자레인지 찜",
-                "difficulty": 1,
-                "time": "8분",
-                "summary": "두부에 양념을 올려 전자레인지로 익히는 요리",
-                "ingredients": ["두부", "간장", "참기름", "대파"],
-            },
-        ],
+def _generate_recipes():
+    backend_url = os.getenv("API_URL") or os.getenv("BACKEND_URL", "http://localhost:8000")
+    backend_url = backend_url.rstrip("/")
+    payload = {
+        "ingredients": [i["name"] for i in st.session_state.ingredients if i["status"] == "normal"],
+        "required_ingredients": [i["name"] for i in st.session_state.ingredients if i["status"] == "required"],
+        "expiring_ingredients": [i["name"] for i in st.session_state.ingredients if i["status"] == "expiring"],
+        "sauces": st.session_state.sauces,
+        "tools": st.session_state.tools,
+        "extra_ingredients": st.session_state.extra_ingredients,
     }
+    try:
+        response = requests.post(f"{backend_url}/recipes/generate", json=payload, timeout=60)
+        response.raise_for_status()
+        return response.json(), None
+    except requests.HTTPError:
+        detail = _extract_error_detail(response)
+        return None, f"레시피 생성에 실패했습니다. {detail}"
+    except requests.RequestException as exc:
+        return None, f"Backend API에 연결하지 못했습니다. 서버 실행 상태를 확인해주세요. ({exc})"
+
+
+def _extract_error_detail(response):
+    try:
+        data = response.json()
+    except ValueError:
+        return response.text
+    return data.get("detail", str(data))
