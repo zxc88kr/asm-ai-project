@@ -12,6 +12,9 @@ class RecipeGenerationError(RuntimeError):
     pass
 
 
+MAX_RETRY = 2
+
+
 class RecipeState(TypedDict, total=False):
     raw_input: dict[str, Any]
     normalized_input: dict[str, list[str]]
@@ -19,6 +22,7 @@ class RecipeState(TypedDict, total=False):
     recipes: dict[str, list[dict[str, Any]]]
     validated_recipes: dict[str, list[dict[str, Any]]]
     final_recipes: dict[str, list[dict[str, Any]]]
+    retry_count: int
 
 
 RECIPE_CATEGORIES = ("beginner", "microwave")
@@ -90,8 +94,21 @@ def _build_graph():
     graph.add_edge("generate_recipe_candidates", "validate_recipes")
     graph.add_edge("validate_recipes", "llm_validate_recipes")
     graph.add_edge("llm_validate_recipes", "llm_select_final_recipes")
-    graph.add_edge("llm_select_final_recipes", END)
+    graph.add_conditional_edges(
+        "llm_select_final_recipes",
+        _route_after_selection,
+        {"retry": "generate_recipe_candidates", "done": END},
+    )
     return graph.compile()
+
+
+def _route_after_selection(state: RecipeState) -> str:
+    final = state.get("final_recipes", {})
+    has_recipes = any(final.get(cat) for cat in RECIPE_CATEGORIES)
+    retry_count = state.get("retry_count", 0)
+    if not has_recipes and retry_count < MAX_RETRY:
+        return "retry"
+    return "done"
 
 
 def _normalize_ingredients(state: RecipeState) -> RecipeState:
@@ -314,13 +331,15 @@ def _llm_select_final_recipes(state: RecipeState) -> RecipeState:
 존재하는 카테고리 키만 포함한다.
 """.strip()
 
+    retry_count = state.get("retry_count", 0)
+
     try:
         response = llm.invoke([HumanMessage(content=prompt)])
         selected_names = _parse_json_object(response.content)
         if not isinstance(selected_names, dict):
             raise ValueError("unexpected format")
     except Exception:
-        return {**state, "final_recipes": candidates}
+        return {**state, "final_recipes": candidates, "retry_count": retry_count}
 
     final: dict[str, list[dict[str, Any]]] = {}
     for category, items in candidates.items():
@@ -329,12 +348,13 @@ def _llm_select_final_recipes(state: RecipeState) -> RecipeState:
             final[category] = items[:RECIPES_PER_CATEGORY]
             continue
         ordered = [r for name in names for r in items if r["name"] == name]
-        # 선정 목록에 없는 후보를 뒤에 붙여 항상 최대 개수를 채운다
         selected_set = {r["name"] for r in ordered}
         fallback = [r for r in items if r["name"] not in selected_set]
         final[category] = (ordered + fallback)[:RECIPES_PER_CATEGORY]
 
-    return {**state, "final_recipes": final}
+    has_recipes = any(final.get(cat) for cat in RECIPE_CATEGORIES)
+    new_retry_count = retry_count + 1 if not has_recipes else retry_count
+    return {**state, "final_recipes": final, "retry_count": new_retry_count}
 
 
 def _parse_verdict_list(text: str, recipes: list[dict[str, Any]]) -> list[str]:
