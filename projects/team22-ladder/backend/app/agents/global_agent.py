@@ -5,6 +5,8 @@ import google.generativeai as genai
 
 from dotenv import load_dotenv
 
+from app.logger import get_logger
+
 load_dotenv()
 
 genai.configure(
@@ -15,14 +17,19 @@ model = genai.GenerativeModel(
     "gemini-2.5-flash"
 )
 
+logger = get_logger("global_agent")
+
 
 def global_agent(state):
 
     image_path = state["image_path"]
 
+    logger.info("냉장고 전체 이미지 분석 시작")
+
     with open(image_path, "rb") as f:
         image_bytes = f.read()
 
+    logger.info("Gemini 2.5-flash API 호출 (전체 이미지)")
     response = model.generate_content(
         [
             """
@@ -76,7 +83,10 @@ def global_agent(state):
         text = text.strip()
 
     data = json.loads(text)
+    ingredients = data["ingredients"]
+
+    logger.info(f"응답 수신 완료 → 재료 {len(ingredients)}개 추출: {ingredients}")
 
     return {
-        "global_ingredients": data["ingredients"]
+        "global_ingredients": ingredients
     }

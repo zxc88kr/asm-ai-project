@@ -5,6 +5,8 @@ import google.generativeai as genai
 
 from dotenv import load_dotenv
 
+from app.logger import get_logger
+
 load_dotenv()
 
 genai.configure(
@@ -15,19 +17,18 @@ model = genai.GenerativeModel(
     "gemini-2.5-flash"
 )
 
+logger = get_logger("fusion_agent")
+
 
 def fusion_agent(state):
 
-    global_result = state.get(
-    "global_ingredients",
-    []
-)
+    global_result = state.get("global_ingredients", [])
+    window_result = state.get("window_ingredients", [])
 
-    window_result = state.get(
-        "window_ingredients",
-        []
-    )
+    logger.info("결과 통합 시작")
+    logger.info(f"global_agent 결과: {len(global_result)}개, window_agent 결과: {len(window_result)}개")
 
+    logger.info("Gemini 2.5-flash API 호출 (중복 제거 및 정제)")
     response = model.generate_content(
         f"""
         Global Agent 결과
@@ -82,11 +83,14 @@ def fusion_agent(state):
     try:
         data = json.loads(text)
     except Exception:
-        print(text)
+        logger.error(f"JSON 파싱 실패, 원본 응답: {text}")
         return {
             "final_ingredients": []
         }
 
+    final = data["ingredients"]
+    logger.info(f"최종 재료 목록 확정: {len(final)}개 → {final}")
+
     return {
-        "final_ingredients": data["ingredients"]
+        "final_ingredients": final
     }

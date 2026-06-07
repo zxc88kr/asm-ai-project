@@ -7,6 +7,8 @@ from PIL import Image
 import google.generativeai as genai
 from dotenv import load_dotenv
 
+from app.logger import get_logger
+
 load_dotenv()
 
 genai.configure(
@@ -16,6 +18,8 @@ genai.configure(
 model = genai.GenerativeModel(
     "gemini-2.5-flash"
 )
+
+logger = get_logger("window_agent")
 
 
 def crop_image(
@@ -69,6 +73,9 @@ def crop_image(
 def window_agent(state):
 
     image_path = state["image_path"]
+
+    logger.info("이미지 분할 분석 시작")
+    logger.info("이미지를 2×2 격자로 크롭 (오버랩 30%)")
 
     crops = crop_image(
         image_path
@@ -136,6 +143,7 @@ def window_agent(state):
         )
 
 
+    logger.info("Gemini 2.5-flash API 호출 (4개 크롭 이미지)")
     response = model.generate_content(
         contents
     )
@@ -148,20 +156,13 @@ def window_agent(state):
         text = text.strip()
 
     try:
-
         data = json.loads(text)
-
-        ingredients = data.get(
-            "ingredients",
-            []
-        )
-
-    except Exception as e:
-
+        ingredients = data.get("ingredients", [])
+    except Exception:
         ingredients = []
 
+    logger.info(f"응답 수신 완료 → 재료 {len(ingredients)}개 추출: {ingredients}")
 
     return {
-        "window_ingredients":
-            ingredients
+        "window_ingredients": ingredients
     }

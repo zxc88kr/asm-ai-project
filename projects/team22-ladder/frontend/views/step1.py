@@ -182,6 +182,55 @@ def render():
     st.markdown("---")
 
 
+def _render_ingredient_card(item):
+    is_req = item.get("required", False)
+    is_exp = item.get("expiring", False)
+    emoji = get_emoji(item["name"])
+    img_url = fetch_unsplash_image(item["name"])
+
+    with st.container(border=True):
+        photo_col, name_col = st.columns([1, 3])
+        with photo_col:
+            if img_url:
+                st.image(img_url, use_container_width=True)
+            else:
+                st.markdown(
+                    f"<div style='text-align:center;font-size:2rem;padding:4px 0'>{emoji}</div>",
+                    unsafe_allow_html=True,
+                )
+        with name_col:
+            badges = ""
+            if is_req:
+                badges += "<span style='background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:999px;font-size:0.75rem;font-weight:600;margin-right:4px'>필수</span>"
+            if is_exp:
+                badges += "<span style='background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:999px;font-size:0.75rem;font-weight:600'>유통기한임박</span>"
+            st.markdown(
+                f"<div style='font-weight:700;font-size:1rem;padding:4px 0'>{item['name']}</div>"
+                + (f"<div style='padding-bottom:4px'>{badges}</div>" if badges else ""),
+                unsafe_allow_html=True,
+            )
+        b1, b2, b3 = st.columns(3)
+        with b1:
+            if st.button("필수", key=f"req_{item['name']}",
+                         type="primary" if is_req else "secondary",
+                         use_container_width=True):
+                item["required"] = not is_req
+                st.rerun()
+        with b2:
+            if st.button("유통기한임박", key=f"exp_{item['name']}",
+                         type="primary" if is_exp else "secondary",
+                         use_container_width=True):
+                item["expiring"] = not is_exp
+                st.rerun()
+        with b3:
+            if st.button("삭제", key=f"del_{item['name']}",
+                         use_container_width=True):
+                st.session_state.ingredients = [
+                    i for i in st.session_state.ingredients if i["name"] != item["name"]
+                ]
+                st.rerun()
+
+
 def _render_ingredient_grid():
     ingredients = st.session_state.ingredients
 
@@ -194,57 +243,13 @@ def _render_ingredient_grid():
 
     ordered = sorted(ingredients, key=_sort_key)
 
-    for item in ordered:
-        is_req = item.get("required", False)
-        is_exp = item.get("expiring", False)
-        emoji = get_emoji(item["name"])
-        img_url = fetch_unsplash_image(item["name"])
-
-        with st.container(border=True):
-            photo_col, name_col, btn_col = st.columns([2, 3, 5])
-
-            with photo_col:
-                if img_url:
-                    st.image(img_url, use_container_width=True)
-                else:
-                    st.markdown(
-                        f"<div style='text-align:center;font-size:2.5em;padding:8px 0'>{emoji}</div>",
-                        unsafe_allow_html=True,
-                    )
-
-            with name_col:
-                badges = ""
-                if is_req:
-                    badges += "<span style='background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:999px;font-size:0.75rem;font-weight:600;margin-right:4px'>필수</span>"
-                if is_exp:
-                    badges += "<span style='background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:999px;font-size:0.75rem;font-weight:600'>유통기한임박</span>"
-                st.markdown(
-                    f"<div style='font-weight:700;font-size:1.05rem;padding:8px 0 4px'>{item['name']}</div>"
-                    + (f"<div style='padding-bottom:8px'>{badges}</div>" if badges else ""),
-                    unsafe_allow_html=True,
-                )
-
-            with btn_col:
-                b1, b2, b3 = st.columns([2, 4, 2])
-                with b1:
-                    if st.button("필수", key=f"req_{item['name']}",
-                                 type="primary" if is_req else "secondary",
-                                 use_container_width=True):
-                        item["required"] = not is_req
-                        st.rerun()
-                with b2:
-                    if st.button("유통기한임박", key=f"exp_{item['name']}",
-                                 type="primary" if is_exp else "secondary",
-                                 use_container_width=True):
-                        item["expiring"] = not is_exp
-                        st.rerun()
-                with b3:
-                    if st.button("삭제", key=f"del_{item['name']}",
-                                 use_container_width=True):
-                        st.session_state.ingredients = [
-                            i for i in st.session_state.ingredients if i["name"] != item["name"]
-                        ]
-                        st.rerun()
+    for i in range(0, len(ordered), 2):
+        col1, col2 = st.columns(2)
+        with col1:
+            _render_ingredient_card(ordered[i])
+        if i + 1 < len(ordered):
+            with col2:
+                _render_ingredient_card(ordered[i + 1])
 
 
 def _add_ingredients(names: list[str]):
