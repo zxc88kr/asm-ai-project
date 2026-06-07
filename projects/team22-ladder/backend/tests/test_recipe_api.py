@@ -16,7 +16,7 @@ def test_generate_recipes_returns_recipe_categories(monkeypatch):
     def fake_generate_recipes(payload):
         assert payload["ingredients"] == ["김치"]
         return {
-            "beginner": [
+            "top_recipes": [
                 {
                     "name": "김치볶음밥",
                     "difficulty": 1,
@@ -29,7 +29,12 @@ def test_generate_recipes_returns_recipe_categories(monkeypatch):
                     "youtube_query": "김치볶음밥 레시피",
                 }
             ],
-            "microwave": [],
+            "recipes": {"beginner": [], "microwave": []},
+            "category_meta": {
+                "beginner": {"label": "초보 요리사 추천"},
+                "microwave": {"label": "전자레인지 간편 요리"},
+            },
+            "logs": ["재료 정리 완료"],
         }
 
     monkeypatch.setattr(main, "generate_recipes", fake_generate_recipes)
@@ -39,5 +44,7 @@ def test_generate_recipes_returns_recipe_categories(monkeypatch):
 
     assert response.status_code == 200
     body = response.json()
-    assert set(body.keys()) == {"beginner", "microwave"}
-    assert body["beginner"][0]["name"] == "김치볶음밥"
+    assert set(body.keys()) == {"top_recipes", "recipes", "category_meta", "logs"}
+    assert body["top_recipes"][0]["name"] == "김치볶음밥"
+    assert set(body["recipes"].keys()) == {"beginner", "microwave"}
+    assert body["logs"] == ["재료 정리 완료"]

@@ -1,4 +1,23 @@
-from app.recipe_agent import _looks_like_forced_combo, _parse_json_object, _validate_recipes
+from app.recipe_agent import (
+    _active_recipe_categories,
+    _attach_youtube_videos,
+    _extract_youtube_video_from_html,
+    _append_log,
+    _looks_like_forced_combo,
+    _normalize_ingredients,
+    _parse_json_object,
+    _select_recipe_categories,
+    _validate_recipes,
+)
+
+
+def test_append_log_prints_to_terminal(capsys):
+    result = _append_log({"logs": []}, "재료 정리 시작")
+
+    captured = capsys.readouterr()
+
+    assert result["logs"] == ["재료 정리 시작"]
+    assert "[recipe_agent] 재료 정리 시작" in captured.out
 
 
 def test_validate_recipes_normalizes_missing_fields():
@@ -8,11 +27,12 @@ def test_validate_recipes_normalizes_missing_fields():
             "required_ingredients": [],
             "expiring_ingredients": [],
             "sauces": ["간장"],
-            "tools": [],
+            "tools": ["전자레인지"],
             "extra_ingredients": [],
         },
         "llm_text": """
         {
+          "top_recipes": [],
           "beginner": [
             {
               "name": "김치무침",
@@ -47,7 +67,7 @@ def test_validate_recipes_splits_amounts_from_ingredient_names():
             "required_ingredients": [],
             "expiring_ingredients": [],
             "sauces": ["간장"],
-            "tools": [],
+            "tools": ["전자레인지"],
             "extra_ingredients": [],
         },
         "llm_text": """
@@ -217,7 +237,7 @@ def test_validate_recipes_limits_each_category_to_three():
             "required_ingredients": [],
             "expiring_ingredients": [],
             "sauces": [],
-            "tools": [],
+            "tools": ["전자레인지"],
             "extra_ingredients": [],
         },
         "llm_text": f"""
@@ -232,3 +252,197 @@ def test_validate_recipes_limits_each_category_to_three():
 
     assert len(result["recipes"]["beginner"]) == 3
     assert len(result["recipes"]["microwave"]) == 3
+
+
+def test_validate_recipes_normalizes_top_recipes_to_five():
+    recipes = ",".join(
+        f'{{"name": "김치볶음밥 {idx}", "ingredients": ["김치", "밥"]}}'
+        for idx in range(7)
+    )
+    state = {
+        "normalized_input": {
+            "ingredients": ["김치"],
+            "required_ingredients": [],
+            "expiring_ingredients": [],
+            "sauces": [],
+            "tools": [],
+            "extra_ingredients": [],
+        },
+        "llm_text": f"""
+        {{
+          "top_recipes": [{recipes}],
+          "beginner": []
+        }}
+        """,
+        "logs": ["재료 정리 완료"],
+    }
+
+    result = _validate_recipes(state)
+
+    assert len(result["top_recipes"]) == 5
+    assert "JSON 파싱/정규화 완료" in result["logs"]
+
+
+def test_active_recipe_categories_depend_on_tools():
+    base = {
+        "ingredients": ["김치"],
+        "required_ingredients": [],
+        "expiring_ingredients": [],
+        "sauces": [],
+        "tools": [],
+        "extra_ingredients": [],
+    }
+
+    without_tools = _active_recipe_categories(base)
+    with_tools = _active_recipe_categories({**base, "tools": ["전자레인지"]})
+
+    assert "microwave" not in without_tools
+    assert "microwave" in with_tools
+    assert "air_fryer" not in with_tools
+
+
+def test_select_recipe_categories_limits_generation_scope(monkeypatch):
+    monkeypatch.setattr("app.recipe_agent.random.sample", lambda values, count: list(values)[:count])
+
+    selected = _select_recipe_categories([
+        "beginner",
+        "microwave",
+        "korean_home",
+        "soup_stew",
+        "stir_fry",
+    ])
+
+    assert selected == ["beginner", "microwave", "korean_home"]
+
+
+def test_normalize_ingredients_stores_selected_category_meta(monkeypatch):
+    monkeypatch.setattr("app.recipe_agent.random.sample", lambda values, count: list(values)[:count])
+
+    result = _normalize_ingredients(
+        {
+            "raw_input": {
+                "ingredients": ["김치"],
+                "tools": ["전자레인지"],
+            },
+            "logs": [],
+        }
+    )
+
+    assert list(result["category_meta"].keys()) == ["beginner", "microwave", "korean_home"]
+    assert "추천 카테고리 선정 완료: 초보 요리사 추천, 전자레인지 간편 요리, 한식 집밥" in result["logs"]
+
+
+def test_validate_recipes_only_keeps_selected_categories():
+    state = {
+        "normalized_input": {
+            "ingredients": ["김치"],
+            "required_ingredients": [],
+            "expiring_ingredients": [],
+            "sauces": [],
+            "tools": [],
+            "extra_ingredients": [],
+        },
+        "category_meta": {"beginner": {"label": "초보 요리사 추천"}},
+        "llm_text": """
+        {
+          "top_recipes": [],
+          "beginner": [{"name": "김치볶음밥", "ingredients": ["김치", "밥"]}],
+          "soup_stew": [{"name": "김치찌개", "ingredients": ["김치", "물"]}]
+        }
+        """,
+    }
+
+    result = _validate_recipes(state)
+
+    assert set(result["recipes"].keys()) == {"beginner"}
+    assert result["recipes"]["beginner"][0]["category_label"] == "초보 요리사 추천"
+
+
+def test_attach_youtube_videos_ignores_lookup_failure(monkeypatch):
+    envelope = {
+        "top_recipes": [{"name": "김치볶음밥", "youtube_query": "김치볶음밥 레시피"}],
+        "recipes": {},
+        "category_meta": {},
+        "logs": [],
+    }
+
+    def fail_lookup(api_key, query):
+        raise RuntimeError("youtube down")
+
+    monkeypatch.setenv("YOUTUBE_API_KEY", "test-key")
+    monkeypatch.setattr("app.recipe_agent._fetch_youtube_video", fail_lookup)
+
+    result = _attach_youtube_videos(envelope)
+
+    assert result["top_recipes"][0]["name"] == "김치볶음밥"
+    assert "youtube_video" not in result["top_recipes"][0]
+    assert "YouTube 영상 조회 실패" in result["logs"][0]
+
+
+def test_attach_youtube_videos_adds_thumbnail(monkeypatch):
+    envelope = {
+        "top_recipes": [{"name": "김치볶음밥", "youtube_query": "김치볶음밥 레시피"}],
+        "recipes": {},
+        "category_meta": {},
+        "logs": [],
+    }
+
+    def fake_lookup(api_key, query):
+        return {
+            "title": "김치볶음밥 만들기",
+            "thumbnail_url": "https://example.com/thumb.jpg",
+            "url": "https://www.youtube.com/watch?v=abc",
+        }
+
+    monkeypatch.setenv("YOUTUBE_API_KEY", "test-key")
+    monkeypatch.setattr("app.recipe_agent._fetch_youtube_video", fake_lookup)
+
+    result = _attach_youtube_videos(envelope)
+
+    assert result["top_recipes"][0]["youtube_video"]["thumbnail_url"] == "https://example.com/thumb.jpg"
+
+
+def test_attach_youtube_videos_continues_after_lookup_failure(monkeypatch):
+    envelope = {
+        "top_recipes": [
+            {"name": "김치볶음밥", "youtube_query": "김치볶음밥 레시피"},
+            {"name": "계란찜", "youtube_query": "계란찜 레시피"},
+        ],
+        "recipes": {},
+        "category_meta": {},
+        "logs": [],
+    }
+    calls = []
+
+    def lookup(api_key, query):
+        calls.append(query)
+        if len(calls) == 1:
+            raise RuntimeError("youtube down")
+        return {
+            "title": "계란찜 만들기",
+            "thumbnail_url": "https://example.com/egg.jpg",
+            "url": "https://www.youtube.com/watch?v=egg",
+        }
+
+    monkeypatch.setenv("YOUTUBE_API_KEY", "test-key")
+    monkeypatch.setattr("app.recipe_agent._fetch_youtube_video", lookup)
+
+    result = _attach_youtube_videos(envelope)
+
+    assert "youtube_video" not in result["top_recipes"][0]
+    assert result["top_recipes"][1]["youtube_video"]["thumbnail_url"] == "https://example.com/egg.jpg"
+
+
+def test_extract_youtube_video_from_html_uses_first_search_video():
+    html = """
+    {"videoId":"first123","title":{"runs":[{"text":"첫 번째 레시피"}]}}
+    {"videoId":"second456","title":{"runs":[{"text":"두 번째 레시피"}]}}
+    """
+
+    result = _extract_youtube_video_from_html("김치볶음밥 레시피", html)
+
+    assert result == {
+        "title": "김치볶음밥 레시피",
+        "thumbnail_url": "https://i.ytimg.com/vi/first123/hqdefault.jpg",
+        "url": "https://www.youtube.com/watch?v=first123",
+    }

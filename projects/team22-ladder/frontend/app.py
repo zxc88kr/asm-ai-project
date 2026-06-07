@@ -95,6 +95,10 @@ defaults = {
     "tools": [],
     "extra_ingredients": [],
     "recipes": {},
+    "top_recipes": [],
+    "recipe_category_meta": {},
+    "recipe_logs": [],
+    "visible_recipe_categories": [],
 }
 for k, v in defaults.items():
     if k not in st.session_state:
@@ -105,8 +109,18 @@ STEPS = [home, step1, step2, step3]
 # 로고 클릭 시 홈 이동
 if st.query_params.get("reset") == "1":
     st.query_params.clear()
-    for k in ["ingredients", "sauces", "tools", "extra_ingredients", "recipes"]:
-        st.session_state[k] = [] if k != "recipes" else {}
+    for k in [
+        "ingredients",
+        "sauces",
+        "tools",
+        "extra_ingredients",
+        "recipes",
+        "top_recipes",
+        "recipe_category_meta",
+        "recipe_logs",
+        "visible_recipe_categories",
+    ]:
+        st.session_state[k] = {} if k in ["recipes", "recipe_category_meta"] else []
     st.session_state.step = 0
     st.rerun()
 

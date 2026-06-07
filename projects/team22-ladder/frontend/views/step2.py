@@ -111,12 +111,12 @@ def render():
         if not all_ingredients:
             st.error("재료를 먼저 입력해주세요!")
         else:
-            with st.spinner("레시피를 생성하는 중..."):
+            with st.spinner("레시피 생성 중..."):
                 recipes, error = _generate_recipes()
             if error:
                 st.error(error)
             else:
-                st.session_state.recipes = recipes
+                _store_recipe_response(recipes)
                 st.session_state.step = 3
                 st.rerun()
 
@@ -133,7 +133,7 @@ def _generate_recipes():
         "extra_ingredients": st.session_state.extra_ingredients,
     }
     try:
-        response = requests.post(f"{backend_url}/recipes/generate", json=payload, timeout=60)
+        response = requests.post(f"{backend_url}/recipes/generate", json=payload, timeout=120)
         response.raise_for_status()
         return response.json(), None
     except requests.HTTPError:
@@ -141,6 +141,20 @@ def _generate_recipes():
         return None, f"레시피 생성에 실패했습니다. {detail}"
     except requests.RequestException as exc:
         return None, f"Backend API에 연결하지 못했습니다. 서버 실행 상태를 확인해주세요. ({exc})"
+
+
+def _store_recipe_response(data):
+    if isinstance(data, dict) and "recipes" in data:
+        st.session_state.top_recipes = data.get("top_recipes", [])
+        st.session_state.recipes = data.get("recipes", {})
+        st.session_state.recipe_category_meta = data.get("category_meta", {})
+        st.session_state.recipe_logs = data.get("logs", [])
+    else:
+        st.session_state.top_recipes = []
+        st.session_state.recipes = data or {}
+        st.session_state.recipe_category_meta = {}
+        st.session_state.recipe_logs = []
+    st.session_state.visible_recipe_categories = []
 
 
 def _extract_error_detail(response):

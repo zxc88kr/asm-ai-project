@@ -21,6 +21,7 @@ uvicorn app.main:app --reload
 ```
 
 `.env`에 `UPSTAGE_API_KEY` 값을 직접 입력해야 레시피 생성 Agent가 동작합니다.
+`YOUTUBE_API_KEY`가 있으면 관련 영상 썸네일을 함께 조회하고, 없으면 YouTube 검색 링크만 제공합니다.
 
 **Recipe Agent API 테스트**
 
