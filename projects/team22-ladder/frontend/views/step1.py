@@ -42,12 +42,6 @@ INGREDIENT_EMOJI = {
     "라면": "🍜", "밥": "🍚", "떡": "🍡",
 }
 
-STATUS_CONFIG = {
-    "normal":   {"label": "",             "border": "#e2e8f0"},
-    "required": {"label": "필수",         "border": "#3b82f6"},
-    "expiring": {"label": "유통기한임박", "border": "#60a5fa"},
-}
-
 
 def get_emoji(name: str) -> str:
     return INGREDIENT_EMOJI.get(name, "🥗")
@@ -152,8 +146,8 @@ def render():
         return
 
     total = len(st.session_state.ingredients)
-    req = sum(1 for i in st.session_state.ingredients if i["status"] == "required")
-    exp = sum(1 for i in st.session_state.ingredients if i["status"] == "expiring")
+    req = sum(1 for i in st.session_state.ingredients if i.get("required", False))
+    exp = sum(1 for i in st.session_state.ingredients if i.get("expiring", False))
 
     summary = f"재료 목록 &nbsp; <span style='font-size:0.85em;color:#6b7280'>총 {total}개</span>"
     if req:
@@ -176,8 +170,15 @@ def render():
 
 def _render_ingredient_grid():
     ingredients = st.session_state.ingredients
-    order = {"required": 0, "expiring": 1, "normal": 2}
-    ordered = sorted(ingredients, key=lambda x: order[x["status"]])
+
+    def _sort_key(item):
+        r, e = item.get("required", False), item.get("expiring", False)
+        if r and e: return 0
+        if r: return 1
+        if e: return 2
+        return 3
+
+    ordered = sorted(ingredients, key=_sort_key)
 
     cols_per_row = 4
     for row_start in range(0, len(ordered), cols_per_row):
@@ -185,11 +186,10 @@ def _render_ingredient_grid():
         cols = st.columns(cols_per_row)
         for col_idx, item in enumerate(row_items):
             with cols[col_idx]:
-                cfg = STATUS_CONFIG[item["status"]]
                 emoji = get_emoji(item["name"])
                 img_url = fetch_unsplash_image(item["name"])
-                is_req = item["status"] == "required"
-                is_exp = item["status"] == "expiring"
+                is_req = item.get("required", False)
+                is_exp = item.get("expiring", False)
 
                 with st.container(border=True):
                     img_col, btn_col = st.columns([2, 3])
@@ -206,11 +206,15 @@ def _render_ingredient_grid():
                             f"<div style='font-weight:700;font-size:0.95rem;margin-bottom:6px'>{item['name']}</div>",
                             unsafe_allow_html=True,
                         )
-                        if st.button("필수 ✓" if is_req else "필수", key=f"req_{item['name']}", use_container_width=True):
-                            item["status"] = "normal" if is_req else "required"
+                        if st.button("필수", key=f"req_{item['name']}",
+                                     type="primary" if is_req else "secondary",
+                                     use_container_width=True):
+                            item["required"] = not is_req
                             st.rerun()
-                        if st.button("임박 ✓" if is_exp else "유통기한임박", key=f"exp_{item['name']}", use_container_width=True):
-                            item["status"] = "normal" if is_exp else "expiring"
+                        if st.button("유통기한임박", key=f"exp_{item['name']}",
+                                     type="primary" if is_exp else "secondary",
+                                     use_container_width=True):
+                            item["expiring"] = not is_exp
                             st.rerun()
                         if st.button("삭제", key=f"del_{item['name']}", use_container_width=True):
                             st.session_state.ingredients = [
@@ -223,4 +227,4 @@ def _add_ingredients(names: list[str]):
     existing = {i["name"] for i in st.session_state.ingredients}
     for name in names:
         if name not in existing:
-            st.session_state.ingredients.append({"name": name, "status": "normal"})
+            st.session_state.ingredients.append({"name": name, "required": False, "expiring": False})

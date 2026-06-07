@@ -139,9 +139,9 @@ def render():
     )
 
     if all_ingredients:
-        required = [i["name"] for i in st.session_state.ingredients if i["status"] == "required"]
-        expiring = [i["name"] for i in st.session_state.ingredients if i["status"] == "expiring"]
-        normal = [i["name"] for i in st.session_state.ingredients if i["status"] == "normal"]
+        required = [i["name"] for i in st.session_state.ingredients if i.get("required", False)]
+        expiring = [i["name"] for i in st.session_state.ingredients if i.get("expiring", False)]
+        normal = [i["name"] for i in st.session_state.ingredients if not i.get("required", False) and not i.get("expiring", False)]
 
         if required:
             st.markdown("**필수 재료**")
@@ -189,9 +189,9 @@ def _generate_recipes():
     backend_url = os.getenv("API_URL") or os.getenv("BACKEND_URL", "http://localhost:8000")
     backend_url = backend_url.rstrip("/")
     payload = {
-        "ingredients": [i["name"] for i in st.session_state.ingredients if i["status"] == "normal"],
-        "required_ingredients": [i["name"] for i in st.session_state.ingredients if i["status"] == "required"],
-        "expiring_ingredients": [i["name"] for i in st.session_state.ingredients if i["status"] == "expiring"],
+        "ingredients": [i["name"] for i in st.session_state.ingredients if not i.get("required", False) and not i.get("expiring", False)],
+        "required_ingredients": [i["name"] for i in st.session_state.ingredients if i.get("required", False)],
+        "expiring_ingredients": [i["name"] for i in st.session_state.ingredients if i.get("expiring", False)],
         "sauces": list(st.session_state.sauces) + st.session_state.custom_sauces,
         "tools": list(st.session_state.tools) + st.session_state.custom_tools,
         "extra_ingredients": st.session_state.extra_ingredients,
