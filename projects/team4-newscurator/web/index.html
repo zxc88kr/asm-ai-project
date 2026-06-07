@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>뉴스 요약 큐레이터 에이전트</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="control-panel" aria-label="뉴스 브리핑 설정">
+        <div class="brand-row">
+          <div>
+            <p class="eyebrow">RSS Briefing Agent</p>
+            <h1>뉴스 요약 큐레이터</h1>
+          </div>
+          <span class="status-pill" id="systemStatus">연결 확인 중</span>
+        </div>
+
+        <div class="preset-block">
+          <div class="section-header">
+            <h2>추천 프리셋</h2>
+          </div>
+          <div class="preset-list" id="presetList"></div>
+        </div>
+
+        <div class="profile-block">
+          <div class="section-header split">
+            <h2>저장 프로필</h2>
+            <button class="text-button" id="profileRefreshButton" type="button">새로고침</button>
+          </div>
+          <div class="profile-save">
+            <input id="profileName" class="compact-input" type="text" maxlength="40" placeholder="프로필 이름" />
+            <button id="saveProfileButton" type="button">저장</button>
+          </div>
+          <div class="profile-list" id="profileList"></div>
+        </div>
+
+        <form id="briefingForm">
+          <fieldset>
+            <legend>언론사</legend>
+            <div class="control-tools">
+              <input id="sourceSearch" class="compact-input" type="search" placeholder="언론사 검색" />
+              <div class="mini-actions">
+                <button id="selectAllSourcesButton" type="button">전체</button>
+                <button id="clearSourcesButton" type="button">해제</button>
+              </div>
+            </div>
+            <p class="selection-summary" id="sourceSelectionSummary"></p>
+            <div class="option-grid" id="sourceOptions"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>관심 분야</legend>
+            <div class="control-tools compact">
+              <p class="selection-summary" id="topicSelectionSummary"></p>
+              <div class="mini-actions">
+                <button id="defaultTopicsButton" type="button">기본</button>
+                <button id="clearTopicsButton" type="button">해제</button>
+              </div>
+            </div>
+            <div class="option-grid topic-grid" id="topicOptions"></div>
+          </fieldset>
+
+          <div class="keyword-field">
+            <label for="customKeywords">포함 키워드</label>
+            <textarea
+              id="customKeywords"
+              name="customKeywords"
+              rows="3"
+              placeholder="예: 로봇, 바이오, 방산, 게임"
+            ></textarea>
+            <p class="field-help">제목이나 설명에 들어가면 우선순위가 올라갑니다.</p>
+            <div class="keyword-preview" id="customKeywordPreview" aria-live="polite"></div>
+          </div>
+
+          <div class="keyword-field">
+            <label for="excludeKeywords">제외 키워드</label>
+            <textarea
+              id="excludeKeywords"
+              name="excludeKeywords"
+              rows="2"
+              placeholder="예: 스포츠, 연예, 광고"
+            ></textarea>
+            <p class="field-help">포함된 기사는 브리핑 후보에서 제외됩니다.</p>
+            <div class="keyword-preview danger" id="excludeKeywordPreview" aria-live="polite"></div>
+          </div>
+
+          <div class="field-row">
+            <label for="dateRange">기간</label>
+            <select id="dateRange" name="dateRange">
+              <option value="1d">오늘</option>
+              <option value="7d">최근 7일</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="limit">기사 수</label>
+            <input id="limit" name="limit" type="number" min="1" max="10" value="5" />
+          </div>
+
+          <div class="action-row">
+            <button class="secondary-action" id="resetButton" type="button" title="입력 조건 초기화">
+              초기화
+            </button>
+            <button class="primary-action" type="submit" title="선택한 조건으로 브리핑 생성">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M4 4h16v4H4zM4 10h10v10H4zM16 10h4v10h-4z" />
+              </svg>
+              브리핑 생성
+            </button>
+          </div>
+        </form>
+
+      </section>
+
+      <section class="results-panel" aria-live="polite">
+        <div class="results-header">
+          <div>
+            <p class="eyebrow" id="resultMeta">대기 중</p>
+            <h2 id="briefingTitle">브리핑 조건을 선택하세요</h2>
+          </div>
+          <button class="icon-button" id="refreshButton" type="button" title="현재 조건으로 새로고침">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M17.7 6.3A8 8 0 1 0 20 12h-2.1a6 6 0 1 1-1.76-4.24L13 10.9h8V3z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="result-tabs" role="tablist" aria-label="결과 탭">
+          <button class="tab-button active" type="button" data-tab="briefing">브리핑</button>
+          <button class="tab-button" type="button" data-tab="sources">언론사 상태</button>
+          <button class="tab-button" type="button" data-tab="history">최근 기록</button>
+        </div>
+
+        <div class="tab-panel active" id="briefingPanel">
+          <div class="notice-stack" id="noticeStack"></div>
+
+          <div class="stats-grid" id="statsGrid" hidden></div>
+
+          <details class="criteria-panel" open>
+            <summary>브리핑 생성 기준</summary>
+            <div class="criteria-grid">
+              <span>RSS 수집</span>
+              <span>기간 필터</span>
+              <span>포함/제외 키워드</span>
+              <span>중복 제거</span>
+              <span>우선순위 점수</span>
+              <span>Upstage 요약</span>
+            </div>
+          </details>
+
+          <div class="common-topics" id="commonTopics" hidden>
+            <h3>공통 핵심 이슈</h3>
+            <ul id="commonTopicList"></ul>
+          </div>
+
+          <div class="empty-state" id="emptyState">
+            <div class="signal-grid" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <p>선택한 조건으로 핵심 뉴스 브리핑을 생성합니다.</p>
+          </div>
+
+          <div class="article-list" id="articleList"></div>
+        </div>
+
+        <div class="tab-panel" id="sourcesPanel" hidden>
+          <div class="panel-toolbar">
+            <div>
+              <h3>언론사 RSS 상태</h3>
+              <p class="field-help">각 언론사의 공개 RSS 응답과 기사 수를 확인합니다.</p>
+            </div>
+            <button class="secondary-action compact" id="sourceStatusRefreshButton" type="button">상태 확인</button>
+          </div>
+          <div class="source-status-list" id="sourceStatusList"></div>
+        </div>
+
+        <div class="tab-panel" id="historyPanel" hidden>
+          <div class="panel-toolbar">
+            <div>
+              <h3>최근 브리핑</h3>
+              <p class="field-help">저장된 브리핑을 다시 열어 비교할 수 있습니다.</p>
+            </div>
+            <button class="secondary-action compact" id="historyRefreshButton" type="button">새로고침</button>
+          </div>
+          <div class="history-list large" id="historyList"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/static/app.js?v=advanced-20260607"></script>
+  </body>
+</html>
