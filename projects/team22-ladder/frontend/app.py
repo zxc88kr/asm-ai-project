@@ -95,6 +95,10 @@ defaults = {
     "tools": [],
     "extra_ingredients": [],
     "recipes": {},
+    "top_recipes": [],
+    "recipe_category_meta": {},
+    "recipe_logs": [],
+    "visible_recipe_categories": [],
 }
 for k, v in defaults.items():
     if k not in st.session_state:
@@ -105,8 +109,18 @@ STEPS = [home, step1, step2, step3]
 # 로고 클릭 시 홈 이동
 if st.query_params.get("reset") == "1":
     st.query_params.clear()
-    for k in ["ingredients", "sauces", "tools", "extra_ingredients", "recipes"]:
-        st.session_state[k] = [] if k != "recipes" else {}
+    for k in [
+        "ingredients",
+        "sauces",
+        "tools",
+        "extra_ingredients",
+        "recipes",
+        "top_recipes",
+        "recipe_category_meta",
+        "recipe_logs",
+        "visible_recipe_categories",
+    ]:
+        st.session_state[k] = {} if k in ["recipes", "recipe_category_meta"] else []
     st.session_state.step = 0
     st.rerun()
 
@@ -144,7 +158,7 @@ with col_progress:
             steps_html += f"""
             <div style="display:flex;flex-direction:column;align-items:center;min-width:48px">
                 <div style="width:28px;height:28px;border-radius:50%;{circle_style};
-                    display:flex;align-items:center;justify-content:center;
+                    display:flex;align-items:center;justify-content:justify;
                     font-size:0.85rem;font-weight:700;margin-bottom:4px">{icon}</div>
                 <div style="font-size:0.75rem;{label_style};white-space:nowrap">{label}</div>
             </div>
