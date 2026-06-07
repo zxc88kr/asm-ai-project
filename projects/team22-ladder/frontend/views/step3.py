@@ -37,6 +37,29 @@ def render():
     st.title("🍳 레시피 추천")
     st.markdown("<hr style='margin:4px 0 20px;border-color:#e5e7eb'>", unsafe_allow_html=True)
 
+    col_back, col_reset = st.columns([1, 1])
+    if col_back.button("← 재료 보강으로"):
+        st.session_state.step = 2
+        st.rerun()
+    if col_reset.button("처음부터 다시"):
+        for k in [
+            "ingredients",
+            "sauces",
+            "tools",
+            "extra_ingredients",
+            "custom_sauces",
+            "custom_tools",
+            "recipes",
+            "candidate_recipes",
+            "top_recipes",
+            "recipe_category_meta",
+            "recipe_logs",
+            "visible_recipe_categories",
+        ]:
+            st.session_state[k] = {} if k in ["recipes", "candidate_recipes", "recipe_category_meta"] else []
+        st.session_state.step = 0
+        st.rerun()
+
     top_recipes = st.session_state.get("top_recipes", [])
     candidate_recipes = st.session_state.get("candidate_recipes", {})
     category_meta = st.session_state.get("recipe_category_meta", {})
@@ -72,30 +95,6 @@ def render():
                 _render_recipe_cards(items, owned, limit=len(items))
         else:
             st.info("다양한 레시피 정보가 없어요.")
-
-    st.markdown("---")
-    col_back, col_reset = st.columns([1, 1])
-    if col_back.button("← 재료 보강으로"):
-        st.session_state.step = 2
-        st.rerun()
-    if col_reset.button("처음부터 다시"):
-        for k in [
-            "ingredients",
-            "sauces",
-            "tools",
-            "extra_ingredients",
-            "custom_sauces",
-            "custom_tools",
-            "recipes",
-            "candidate_recipes",
-            "top_recipes",
-            "recipe_category_meta",
-            "recipe_logs",
-            "visible_recipe_categories",
-        ]:
-            st.session_state[k] = {} if k in ["recipes", "candidate_recipes", "recipe_category_meta"] else []
-        st.session_state.step = 0
-        st.rerun()
 
 
 

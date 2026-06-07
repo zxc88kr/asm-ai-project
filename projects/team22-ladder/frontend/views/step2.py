@@ -15,6 +15,28 @@ def render():
     )
     st.markdown("<hr style='margin:12px 0 20px;border-color:#e5e7eb'>", unsafe_allow_html=True)
 
+    col_back, col_next = st.columns([1, 3])
+    if col_back.button("← 이전"):
+        st.session_state.step = 1
+        st.rerun()
+    if col_next.button("레시피 생성하기", type="primary", use_container_width=True):
+        all_ingredients = (
+            [i["name"] for i in st.session_state.ingredients]
+            + st.session_state.sauces
+            + st.session_state.extra_ingredients
+        )
+        if not all_ingredients:
+            st.error("재료를 먼저 입력해주세요!")
+        else:
+            with st.spinner("레시피 생성 중..."):
+                recipes, error = _generate_recipes()
+            if error:
+                st.error(error)
+            else:
+                _store_recipe_response(recipes)
+                st.session_state.step = 3
+                st.rerun()
+
     # 소스
     st.markdown("### 보유 소스")
     st.caption("보유한 소스/양념을 선택하세요.")
@@ -166,23 +188,6 @@ def render():
     else:
         st.warning("재료가 없어요! 재료 입력 단계에서 먼저 재료를 입력해주세요.")
 
-    st.markdown("")
-    col_back, col_next = st.columns([1, 3])
-    if col_back.button("← 이전"):
-        st.session_state.step = 1
-        st.rerun()
-    if col_next.button("레시피 생성하기", type="primary", use_container_width=True):
-        if not all_ingredients:
-            st.error("재료를 먼저 입력해주세요!")
-        else:
-            with st.spinner("레시피 생성 중..."):
-                recipes, error = _generate_recipes()
-            if error:
-                st.error(error)
-            else:
-                _store_recipe_response(recipes)
-                st.session_state.step = 3
-                st.rerun()
 
 
 def _generate_recipes():

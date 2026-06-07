@@ -97,6 +97,14 @@ def render():
     )
     st.markdown("<hr style='margin:12px 0 20px;border-color:#e5e7eb'>", unsafe_allow_html=True)
 
+    col_reset, col_next = st.columns([1, 3])
+    if col_reset.button("전체 초기화"):
+        st.session_state.ingredients = []
+        st.rerun()
+    if col_next.button("다음 단계 → 재료 보강", type="primary", use_container_width=True):
+        st.session_state.step = 2
+        st.rerun()
+
     tab_image, tab_text = st.tabs(["사진 업로드", "직접 입력"])
 
     with tab_image:
@@ -172,13 +180,6 @@ def render():
     _render_ingredient_grid()
 
     st.markdown("---")
-    col_reset, col_next = st.columns([1, 3])
-    if col_reset.button("전체 초기화"):
-        st.session_state.ingredients = []
-        st.rerun()
-    if col_next.button("다음 단계 → 재료 보강", type="primary", use_container_width=True):
-        st.session_state.step = 2
-        st.rerun()
 
 
 def _render_ingredient_grid():
