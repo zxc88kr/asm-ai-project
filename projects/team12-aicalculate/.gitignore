@@ -1,0 +1,19 @@
+# 환경변수
+.env
+
+# Claude Code 로컬 설정
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# 개발 중 임시/디버그 파일
+_repro_*
+_verify_*
