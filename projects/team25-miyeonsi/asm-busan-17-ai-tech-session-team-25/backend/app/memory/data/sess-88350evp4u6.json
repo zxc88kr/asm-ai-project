@@ -1,0 +1,80 @@
+{
+  "session_id": "sess-88350evp4u6",
+  "affinity": 28,
+  "chapter": 2,
+  "short_term": [
+    {
+      "role": "user",
+      "content": "앗 미안해.."
+    },
+    {
+      "role": "assistant",
+      "content": "아니야~ 내가 좀 오버했나 봐... 처음 여행이라 긴장했을 텐데 내가 잘 챙겨줄게"
+    },
+    {
+      "role": "user",
+      "content": "고마워!"
+    },
+    {
+      "role": "assistant",
+      "content": "응, '고마워!' 말이지? 좀 더 들려줄래?"
+    },
+    {
+      "role": "user",
+      "content": "정말 고마워! 헤헤"
+    },
+    {
+      "role": "assistant",
+      "content": "응, '정말 고마워! 헤헤' 말이지? 좀 더 들려줄래?"
+    },
+    {
+      "role": "user",
+      "content": "고마워!"
+    },
+    {
+      "role": "assistant",
+      "content": "고마워~ 헤헤 이제 정말 여행 메이트 같은 느낌인데?"
+    },
+    {
+      "role": "user",
+      "content": "그러니까! 정말 든든한 메이트라서 좋아!"
+    },
+    {
+      "role": "assistant",
+      "content": "응, '그러니까! 정말 든든한 메이트라서 좋아!' 말이지? 좀 더 들려줄래?"
+    },
+    {
+      "role": "user",
+      "content": "정말 든든한 메이트라서 좋아!!!"
+    },
+    {
+      "role": "assistant",
+      "content": "응, '정말 든든한 메이트라서 좋아!!!' 말이지? 좀 더 들려줄래?"
+    },
+    {
+      "role": "user",
+      "content": "정말 든든한 메이트라서 좋아 ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "헤헤~ 이 느낌 계속 가자! 그럼 항공편부터 찾아볼까? 도쿄 왕복 티켓으로... 아침 출발 vs 저녁 출발 중 어떤 게 더 편할 것 같아?"
+    },
+    {
+      "role": "user",
+      "content": "아침 출발이 더 편할 것 같아!"
+    },
+    {
+      "role": "assistant",
+      "content": "응, '아침 출발이 더 편할 것 같아!' 말이지? 좀 더 들려줄래?"
+    }
+  ],
+  "long_term": {
+    "flags": {},
+    "summary": "도쿄 7월 7일 출발 항공편을 기준으로 시간, 가격, 항공사 중 사용자의 최우선 조건을 확인해 편의성 중심 여행 계획을 수립한다. 첫 여행 경험을 고려해 편안한 항공편 선택을 우선시한다.",
+    "profile": {
+      "destination": "도쿄",
+      "mood": "편한 시간대",
+      "period": "푹 자고 일어나도 충분히 공항에 갈 수 있는 시간"
+    }
+  }
+}

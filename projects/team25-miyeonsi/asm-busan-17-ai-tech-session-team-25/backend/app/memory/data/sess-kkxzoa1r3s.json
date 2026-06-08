@@ -1,0 +1,81 @@
+{
+  "session_id": "sess-kkxzoa1r3s",
+  "affinity": 100,
+  "chapter": 2,
+  "short_term": [
+    {
+      "role": "user",
+      "content": "좋아! 아까 승무원한테 물어봣는데 비빔밥 나온대 ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "오~ 비빔밥이라니 최고다! 우리 같이 김치 반반 나눠먹자! 🥄"
+    },
+    {
+      "role": "user",
+      "content": "내거 다 줄 수 있어 ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "헐... 정말? 너 진짜 내 베프야... 그럼 나 김치 다 먹을게! 대신 너랑 사진 꼭 찍자!"
+    },
+    {
+      "role": "user",
+      "content": "구래 ㅎㅎ [도쿄 도착]"
+    },
+    {
+      "role": "assistant",
+      "content": "와아~ 도쿄 도착이다!!! 첫 해외 여행 기념으로 바로 편의점 가서 오니기리 먹자!"
+    },
+    {
+      "role": "user",
+      "content": "진짜 좋은거같아 ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "오~ 너랑 함께라 더 설렌다! 다음 일정도 같이 계획해보자!"
+    },
+    {
+      "role": "user",
+      "content": "[돌아가는 날] 이번 여행 너무 재미있었다. 정말 최고의 여행이었어! 고마워!"
+    },
+    {
+      "role": "assistant",
+      "content": "나야 말로 너랑 함께라 더 행복했어... 다음엔 우리 어디 갈까? 기대되욤~!"
+    },
+    {
+      "role": "user",
+      "content": "도착!"
+    },
+    {
+      "role": "assistant",
+      "content": "도쿄 공항에 도착했네! 첫 해외 여행 기념으로 바로 편의점 가서 오니기리 먹으러 가자~!"
+    },
+    {
+      "role": "user",
+      "content": "아니 집에 도착이야 ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "아~ 집에 도착했구나! 여행 내내 즐거웠지? 다음엔 더 재밌는 곳 가자! 꼭~"
+    },
+    {
+      "role": "user",
+      "content": "구래!"
+    },
+    {
+      "role": "assistant",
+      "content": "오~ 우리 다음 여행지 어디로 할까? 설렌다~ 너랑 손잡고 또 다른 도시 구경할 생각하니 벌써부터 두근두근!"
+    }
+  ],
+  "long_term": {
+    "flags": {
+      "chapter_turns": 5,
+      "event_confession": true
+    },
+    "summary": "여행지는 도쿄로 결정되었으며, 사용자는 비빔밥과 김치를 좋아하는 식성을 보였고, 항공편에서는 기내식 비빔밥과 김치 나눔을 통해 호감도가 상승하였다. 공항에서는 편의점 도시락과 면세점 구경을, 비행기 내에서는 창밖 사진 촬영과 사이다 마시기를 즐겼으며, 도쿄 도착 후 첫 일정으로 편의점에서 오니기리 먹기를 계획하였다.",
+    "profile": {
+      "destination": "도쿄"
+    }
+  }
+}

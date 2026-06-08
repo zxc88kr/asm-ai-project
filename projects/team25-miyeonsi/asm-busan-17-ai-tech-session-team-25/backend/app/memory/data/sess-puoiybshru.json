@@ -1,0 +1,80 @@
+{
+  "session_id": "sess-puoiybshru",
+  "affinity": 100,
+  "chapter": 3,
+  "short_term": [
+    {
+      "role": "user",
+      "content": "ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "자, 이제 우리 첫 긴자 맛집 투어 가볼까?"
+    },
+    {
+      "role": "user",
+      "content": "가자!"
+    },
+    {
+      "role": "assistant",
+      "content": "와! 나 지금 바로 라쿠라쿠라쿠라쿠... (후다닥) 아, '라쿠우치' 일본 전통 찻집 찾아놨어!"
+    },
+    {
+      "role": "user",
+      "content": "가!"
+    },
+    {
+      "role": "assistant",
+      "content": "야, 나 지금 바로 길 안내 앱 켜는 중! 너랑 손잡고 찻집까지 달려갈게~"
+    },
+    {
+      "role": "user",
+      "content": "구래 ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "라쿠우치 다도 체험 예약까지 10분 남았어! 나 지금 바로 뛰러 갈게~ 너도 준비됐지?!"
+    },
+    {
+      "role": "user",
+      "content": "완료!"
+    },
+    {
+      "role": "assistant",
+      "content": "와! 우리 바로 다도 체험 시작이야~ 내 손 꼭 잡아, 일본 차향에 취해볼게! (부끄부끄)"
+    },
+    {
+      "role": "user",
+      "content": "ㅎㅎㅎ 취해!!"
+    },
+    {
+      "role": "assistant",
+      "content": "차 마시면서 너랑 눈 마주치니 진짜 취했어... 다음 코스는 긴자 스트리트 패션 존! 우리 옷 사러 가자~"
+    },
+    {
+      "role": "user",
+      "content": "가자!!"
+    },
+    {
+      "role": "assistant",
+      "content": "와! 나 지금 바로 긴자 스트릿 패션 존으로 질주 중~ 너랑 코디할 생각에 발걸음이 안 떨어져... (부끄)"
+    },
+    {
+      "role": "user",
+      "content": "ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "와! 이 옷 너랑 나랑 반반씩 입을 수 있을 것 같아~ 나 지금 바로 피팅룸에서 자기랑 포즈 연습 중... (부끄)"
+    }
+  ],
+  "long_term": {
+    "flags": {
+      "event_confession": true
+    },
+    "summary": "도쿄로 7월 7일 오후 2시 30분 출발, 12만 8천원 직항편을 예약했다. 사용자는 도쿄 여행에 적극적인 관심을 보이며 호감도가 상승할 것으로 예상된다. 하네다 공항 도착 예정이다.",
+    "profile": {
+      "destination": "긴자"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "session_id": "test-debug",
+  "affinity": 53,
+  "chapter": 1,
+  "short_term": [
+    {
+      "role": "user",
+      "content": "안녕!"
+    },
+    {
+      "role": "assistant",
+      "content": "오! 왔구나! 오늘 얼마나 기다렸게~ 너랑 여행 계획 세우는 생각하니 벌써 신나!"
+    }
+  ],
+  "long_term": {
+    "flags": {},
+    "summary": "여행지 및 항공편 결정 전, 사용자가 여행 계획 수립을 위해 접속했으며, 상대방은 사용자의 참여에 대해 기대감을 표현하며 호감도를 높이는 반응을 보임. 구체적인 여행지·항공편 및 취향 관련 정보는 아직 언급되지 않음.",
+    "profile": {}
+  }
+}

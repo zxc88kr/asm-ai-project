@@ -1,0 +1,32 @@
+{
+  "session_id": "test-minturn",
+  "affinity": 52,
+  "chapter": 2,
+  "short_term": [
+    {
+      "role": "user",
+      "content": "도쿄 가고 싶어"
+    },
+    {
+      "role": "assistant",
+      "content": "도쿄면 완전 좋은 선택이야~! 비행기 몇 시쯤 출발하는 게 편할까? 아침 일찍 vs 저녁 여유롭게"
+    },
+    {
+      "role": "user",
+      "content": "도쿄로 결정!"
+    },
+    {
+      "role": "assistant",
+      "content": "와아~ 도쿄 간다!!! 🎌 도쿄라면 하루 종일 돌아다녀도 질리지 않을 거 같아 ㅎㅎ 그럼 나랑 같이 항공권 검색해보자!"
+    }
+  ],
+  "long_term": {
+    "flags": {
+      "chapter_turns": 0
+    },
+    "summary": "도쿄로 여행지 결정 후 아침 또는 저녁 항공편 선호도를 확인했으며, 사용자의 적극적인 결정에 호감도가 상승했다. 항공권 검색을 함께 진행하기로 했다.",
+    "profile": {
+      "destination": "도쿄"
+    }
+  }
+}

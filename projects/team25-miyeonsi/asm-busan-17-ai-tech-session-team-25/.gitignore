@@ -1,0 +1,20 @@
+# # Python 환경
+# __pycache__/
+# *.py[cod]
+# venv/
+# .env
+
+# # 프론트엔드 빌드 및 Node
+frontend/dist/
+frontend/build/
+frontend/node_modules/
+
+# # 백엔드 정적 서빙 폴더 및 로컬 메모리 (중요: 보안 및 충돌 방지)
+# backend/static/
+# backend/app/memory/data/*.json
+
+# # OS 기본 생성 파일
+# .DS_Store
+# Thumbs.db
+# Superpowers brainstorming mockups
+.superpowers/

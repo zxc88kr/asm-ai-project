@@ -1,0 +1,84 @@
+{
+  "session_id": "sess-8g64uuyd9m",
+  "affinity": 100,
+  "chapter": 3,
+  "short_term": [
+    {
+      "role": "user",
+      "content": "좋아!! [도쿄 도착]"
+    },
+    {
+      "role": "assistant",
+      "content": "와아아 도쿄다~!! 공기부터 다른 것 같아!! 나 먼저 포켓몬센터 달려갈게! 너랑 사진 찍을 스팟 찾아둘게~"
+    },
+    {
+      "role": "user",
+      "content": "재미있겠어 ㅎㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "와~ 너랑 여행오니 더 신나! 도쿄에서 뭐부터 할까? 너가 정하는 대로 따라갈게 ㅎㅎ"
+    },
+    {
+      "role": "user",
+      "content": "[ .. 신나게 놀고 다시 돌아오는 비행기 안 ] 이번 도쿄 여행 어땠던 것 같아?"
+    },
+    {
+      "role": "assistant",
+      "content": "와~ 너랑 도쿄에서 찍은 사진들 보니 추억 폭발해 ㅠㅠ 다음엔 신주쿠에서 야경 보러 가자! 이번 여행 너무 즐거웠다!"
+    },
+    {
+      "role": "user",
+      "content": "도착! 정말 최고의 여행이었어! 고마워! ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "너랑 함께라서 더 특별했어! 다음 여행은 오사카로 가즈아~"
+    },
+    {
+      "role": "user",
+      "content": "그래 좋아! ㅎㅎ"
+    },
+    {
+      "role": "assistant",
+      "content": "히히~ 오사카에서 우리 또 먹방 대작전 해야징! 기대돼라~ 이번엔 네 추천으로 장소를 정해줘!"
+    },
+    {
+      "role": "user",
+      "content": "다음에는 내가 꼭 재밌는 장소로 추천해줄게!"
+    },
+    {
+      "role": "assistant",
+      "content": "오~ 네 추천 꼭 기다려질 거야! 내가 다 따라갈 준비 완료 🔥"
+    },
+    {
+      "role": "user",
+      "content": "그래!! 다음에 보자 안녕!!"
+    },
+    {
+      "role": "assistant",
+      "content": "안녀엉~! 다음 여행도 나랑 함께해 줘! 약속! 약속! 🌸 도쿄 추억 생각하면서 지낼게 😊"
+    },
+    {
+      "role": "user",
+      "content": "엉!"
+    },
+    {
+      "role": "assistant",
+      "content": "ㅎㅎ 또 보자! 다음엔 더 재밌게 놀아줄게~"
+    }
+  ],
+  "long_term": {
+    "flags": {
+      "chapter_turns": 12,
+      "event_confession": true
+    },
+    "summary": "도쿄 나리타행 항공편을 6월 16일 월요일 오후 6시 30분 출발 제주항공(198,000원)으로 확정했으며, 사용자가 보유한 쿠폰으로 예약해 예산을 절감했다. 인천 출발을 요청했고, 여행 계획에 대한 기대감이 높아 호감도가 상승했다.",
+    "profile": {
+      "companion": "같이 가자",
+      "destination": "도쿄",
+      "mood": "설레",
+      "period": "출발일"
+    }
+  }
+}
