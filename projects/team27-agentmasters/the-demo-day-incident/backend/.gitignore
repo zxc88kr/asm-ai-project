@@ -1,0 +1,37 @@
+# === Python 캐시 및 빌드 파일 ===
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.htmlcov/
+htmlcov/
+.coverage
+.coverage.*
+
+# === 가상환경 ===
+.venv/
+venv/
+ENV/
+env/
+
+# === 환경 변수 및 비밀번호 ===
+.env
+.env.local
+.env.*.local
+
+# === IDE 설정 파일 ===
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# === OS 생성 파일 ===
+.DS_Store
+Thumbs.db
+
+# SQLite 데이터베이스 파일 제외
+*.db
+*.sqlite3

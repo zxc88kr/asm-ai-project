@@ -1,0 +1,13 @@
+.git
+.github
+.plan
+.agents
+__pycache__
+*.py[cod]
+*.sqlite
+*.sqlite3
+sql_app.db
+.DS_Store
+.env
+.venv
+venv

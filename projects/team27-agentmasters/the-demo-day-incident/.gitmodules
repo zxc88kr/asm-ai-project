@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/swmaestro-ai-27/frontend
+[submodule "backend"]
+	path = backend
+	url = https://github.com/swmaestro-ai-27/backend
