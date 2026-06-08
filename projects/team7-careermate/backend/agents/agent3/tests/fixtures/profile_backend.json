@@ -1,0 +1,17 @@
+{
+  "major": "경영학과 졸업",
+  "current_status": "취업 준비 중",
+  "interests": ["백엔드 개발", "클라우드"],
+  "owned_skills": ["Python", "SQL 기초"],
+  "target_role": "백엔드 개발자",
+  "company_type": "스타트업",
+  "weekly_hours": 10,
+  "concern": ["IT로 이직하고 싶은데 개발 경험이 부족합니다."],
+  "summary": "경영학 전공의 취업 준비생으로 백엔드 개발을 목표로 하나 실무 개발 경험이 부족합니다.",
+  "strengths": ["비즈니스 도메인 지식"],
+  "weaknesses": ["개발 경험 부족", "전공 비일치"],
+  "evidence": {
+    "비즈니스 도메인 지식": "major: '경영학과 졸업'",
+    "개발 경험 부족": "concern: ['IT로 이직하고 싶은데 개발 경험이 부족합니다.']"
+  }
+}

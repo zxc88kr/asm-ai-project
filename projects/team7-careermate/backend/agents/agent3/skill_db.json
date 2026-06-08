@@ -1,0 +1,435 @@
+{
+  "_meta": {
+    "description": "CareerMate Agent3 정적 스킬 사전 (IT: 백엔드·프론트엔드·풀스택·데이터·ML·DevOps). lookup_skill/list_skills_for_role/normalize_skill_name/normalize_role_name의 데이터 원본.",
+    "structure": "skills(스킬명→prereqs·resources·typical_hours) / roles(직무→스킬명 리스트) / aliases(스킬 자유표기→표준키) / role_aliases(직무 자유표기→표준 직무키)",
+    "rules": "prereqs·roles의 모든 항목은 skills 키여야 한다(DAG). aliases 타깃은 skills 키, role_aliases 타깃은 roles 키여야 한다. resources.url은 공식문서 위주 검수 url(verified=true).",
+    "skill_count": 53
+  },
+  "skills": {
+    "Git": {
+      "prereqs": [],
+      "resources": [{"title": "Pro Git (한국어)", "url": "https://git-scm.com/book/ko/v2", "type": "doc", "verified": true}],
+      "typical_hours": 8
+    },
+    "HTTP 기초": {
+      "prereqs": [],
+      "resources": [{"title": "MDN: HTTP 개요", "url": "https://developer.mozilla.org/ko/docs/Web/HTTP/Overview", "type": "doc", "verified": true}],
+      "typical_hours": 6
+    },
+    "Linux 기초": {
+      "prereqs": [],
+      "resources": [{"title": "LinuxCommand: Learning the Shell", "url": "https://linuxcommand.org/lc3_learning_the_shell.php", "type": "doc", "verified": true}],
+      "typical_hours": 10
+    },
+    "자료구조": {
+      "prereqs": [],
+      "resources": [{"title": "VisuAlgo 자료구조 시각화", "url": "https://visualgo.net/en", "type": "course", "verified": true}],
+      "typical_hours": 30
+    },
+    "알고리즘": {
+      "prereqs": ["자료구조"],
+      "resources": [{"title": "백준 단계별로 풀어보기", "url": "https://www.acmicpc.net/step", "type": "project", "verified": true}],
+      "typical_hours": 30
+    },
+    "Python": {
+      "prereqs": [],
+      "resources": [
+        {"title": "Python 공식 튜토리얼 (한국어)", "url": "https://docs.python.org/ko/3/tutorial/", "type": "doc", "verified": true},
+        {"title": "점프 투 파이썬", "url": "https://wikidocs.net/book/1", "type": "doc", "verified": true}
+      ],
+      "typical_hours": 40
+    },
+    "객체지향 프로그래밍": {
+      "prereqs": ["Python"],
+      "resources": [{"title": "Python 공식: 클래스", "url": "https://docs.python.org/ko/3/tutorial/classes.html", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "Java": {
+      "prereqs": [],
+      "resources": [
+        {"title": "Oracle Java Tutorials", "url": "https://docs.oracle.com/javase/tutorial/", "type": "doc", "verified": true},
+        {"title": "점프 투 자바", "url": "https://wikidocs.net/book/31", "type": "doc", "verified": true}
+      ],
+      "typical_hours": 40
+    },
+    "Spring": {
+      "prereqs": ["Java", "HTTP 기초"],
+      "resources": [{"title": "Spring Guides", "url": "https://spring.io/guides", "type": "doc", "verified": true}],
+      "typical_hours": 30
+    },
+    "Spring Boot": {
+      "prereqs": ["Spring"],
+      "resources": [{"title": "Spring Boot 공식 문서", "url": "https://docs.spring.io/spring-boot/index.html", "type": "doc", "verified": true}],
+      "typical_hours": 25
+    },
+    "SQL 기초": {
+      "prereqs": [],
+      "resources": [{"title": "SQLZoo", "url": "https://sqlzoo.net/", "type": "course", "verified": true}],
+      "typical_hours": 20
+    },
+    "PostgreSQL": {
+      "prereqs": ["SQL 기초"],
+      "resources": [{"title": "PostgreSQL 공식 튜토리얼", "url": "https://www.postgresql.org/docs/current/tutorial.html", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "MySQL": {
+      "prereqs": ["SQL 기초"],
+      "resources": [{"title": "MySQL 공식 문서", "url": "https://dev.mysql.com/doc/", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "MongoDB": {
+      "prereqs": [],
+      "resources": [{"title": "MongoDB 공식 매뉴얼", "url": "https://www.mongodb.com/docs/manual/tutorial/getting-started/", "type": "doc", "verified": true}],
+      "typical_hours": 12
+    },
+    "ORM": {
+      "prereqs": ["Python", "SQL 기초"],
+      "resources": [{"title": "SQLAlchemy 2.0 튜토리얼", "url": "https://docs.sqlalchemy.org/en/20/tutorial/", "type": "doc", "verified": true}],
+      "typical_hours": 12
+    },
+    "FastAPI": {
+      "prereqs": ["Python", "HTTP 기초"],
+      "resources": [{"title": "FastAPI 공식 튜토리얼", "url": "https://fastapi.tiangolo.com/tutorial/", "type": "doc", "verified": true}],
+      "typical_hours": 20
+    },
+    "Django": {
+      "prereqs": ["Python", "HTTP 기초"],
+      "resources": [{"title": "Django 공식 문서", "url": "https://docs.djangoproject.com/en/stable/", "type": "doc", "verified": true}],
+      "typical_hours": 30
+    },
+    "Flask": {
+      "prereqs": ["Python", "HTTP 기초"],
+      "resources": [{"title": "Flask 공식 문서", "url": "https://flask.palletsprojects.com/", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "REST API 설계": {
+      "prereqs": ["HTTP 기초"],
+      "resources": [{"title": "MDN: REST", "url": "https://developer.mozilla.org/en-US/docs/Glossary/REST", "type": "doc", "verified": true}],
+      "typical_hours": 12
+    },
+    "GraphQL": {
+      "prereqs": ["REST API 설계"],
+      "resources": [{"title": "GraphQL 공식 학습", "url": "https://graphql.org/learn/", "type": "doc", "verified": true}],
+      "typical_hours": 12
+    },
+    "인증/인가": {
+      "prereqs": ["REST API 설계"],
+      "resources": [{"title": "JWT 공식 소개", "url": "https://jwt.io/introduction", "type": "doc", "verified": true}],
+      "typical_hours": 10
+    },
+    "Docker": {
+      "prereqs": ["Linux 기초"],
+      "resources": [{"title": "Docker 공식 Get Started", "url": "https://docs.docker.com/get-started/", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "Kubernetes": {
+      "prereqs": ["Docker"],
+      "resources": [{"title": "Kubernetes 기초 튜토리얼", "url": "https://kubernetes.io/docs/tutorials/kubernetes-basics/", "type": "doc", "verified": true}],
+      "typical_hours": 25
+    },
+    "Nginx": {
+      "prereqs": ["Linux 기초"],
+      "resources": [{"title": "Nginx Beginner's Guide", "url": "https://nginx.org/en/docs/beginners_guide.html", "type": "doc", "verified": true}],
+      "typical_hours": 10
+    },
+    "Terraform": {
+      "prereqs": ["AWS 기초"],
+      "resources": [{"title": "Terraform 공식 튜토리얼", "url": "https://developer.hashicorp.com/terraform/tutorials", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "Redis": {
+      "prereqs": [],
+      "resources": [{"title": "Redis 공식 문서", "url": "https://redis.io/docs/latest/", "type": "doc", "verified": true}],
+      "typical_hours": 10
+    },
+    "Kafka": {
+      "prereqs": [],
+      "resources": [{"title": "Apache Kafka 공식 문서", "url": "https://kafka.apache.org/documentation/", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "테스트 코드": {
+      "prereqs": ["Python"],
+      "resources": [{"title": "pytest 공식 문서", "url": "https://docs.pytest.org/en/stable/", "type": "doc", "verified": true}],
+      "typical_hours": 12
+    },
+    "CI/CD": {
+      "prereqs": ["Git", "Docker"],
+      "resources": [{"title": "GitHub Actions 공식 문서", "url": "https://docs.github.com/en/actions", "type": "doc", "verified": true}],
+      "typical_hours": 12
+    },
+    "AWS 기초": {
+      "prereqs": ["Linux 기초"],
+      "resources": [{"title": "AWS 시작하기", "url": "https://aws.amazon.com/ko/getting-started/", "type": "doc", "verified": true}],
+      "typical_hours": 20
+    },
+    "Node.js": {
+      "prereqs": ["JavaScript"],
+      "resources": [{"title": "Node.js 공식 가이드", "url": "https://nodejs.org/en/learn", "type": "doc", "verified": true}],
+      "typical_hours": 20
+    },
+    "Express": {
+      "prereqs": ["Node.js", "HTTP 기초"],
+      "resources": [{"title": "Express 공식 시작하기", "url": "https://expressjs.com/ko/starter/installing.html", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "HTML/CSS": {
+      "prereqs": [],
+      "resources": [
+        {"title": "MDN: HTML 학습하기", "url": "https://developer.mozilla.org/ko/docs/Learn/HTML", "type": "doc", "verified": true},
+        {"title": "MDN: CSS 학습하기", "url": "https://developer.mozilla.org/ko/docs/Learn/CSS", "type": "doc", "verified": true}
+      ],
+      "typical_hours": 20
+    },
+    "JavaScript": {
+      "prereqs": [],
+      "resources": [
+        {"title": "MDN: JavaScript 가이드", "url": "https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide", "type": "doc", "verified": true},
+        {"title": "모던 JavaScript 튜토리얼", "url": "https://ko.javascript.info/", "type": "doc", "verified": true}
+      ],
+      "typical_hours": 40
+    },
+    "TypeScript": {
+      "prereqs": ["JavaScript"],
+      "resources": [{"title": "TypeScript 공식 핸드북", "url": "https://www.typescriptlang.org/docs/handbook/intro.html", "type": "doc", "verified": true}],
+      "typical_hours": 25
+    },
+    "React": {
+      "prereqs": ["JavaScript", "HTML/CSS"],
+      "resources": [{"title": "React 공식 문서 (학습)", "url": "https://react.dev/learn", "type": "doc", "verified": true}],
+      "typical_hours": 40
+    },
+    "Vue": {
+      "prereqs": ["JavaScript", "HTML/CSS"],
+      "resources": [{"title": "Vue 공식 가이드", "url": "https://ko.vuejs.org/guide/introduction.html", "type": "doc", "verified": true}],
+      "typical_hours": 30
+    },
+    "Next.js": {
+      "prereqs": ["React"],
+      "resources": [{"title": "Next.js 공식 문서", "url": "https://nextjs.org/docs", "type": "doc", "verified": true}],
+      "typical_hours": 25
+    },
+    "상태관리": {
+      "prereqs": ["React"],
+      "resources": [
+        {"title": "Redux Toolkit 공식 튜토리얼", "url": "https://redux-toolkit.js.org/tutorials/quick-start", "type": "doc", "verified": true},
+        {"title": "Zustand 공식 문서", "url": "https://zustand.docs.pmnd.rs/", "type": "doc", "verified": true}
+      ],
+      "typical_hours": 12
+    },
+    "반응형 디자인": {
+      "prereqs": ["HTML/CSS"],
+      "resources": [{"title": "MDN: 반응형 디자인", "url": "https://developer.mozilla.org/ko/docs/Learn/CSS/CSS_layout/Responsive_Design", "type": "doc", "verified": true}],
+      "typical_hours": 10
+    },
+    "Sass": {
+      "prereqs": ["HTML/CSS"],
+      "resources": [{"title": "Sass 공식 문서", "url": "https://sass-lang.com/documentation/", "type": "doc", "verified": true}],
+      "typical_hours": 8
+    },
+    "Tailwind CSS": {
+      "prereqs": ["HTML/CSS"],
+      "resources": [{"title": "Tailwind CSS 공식 문서", "url": "https://tailwindcss.com/docs/installation", "type": "doc", "verified": true}],
+      "typical_hours": 8
+    },
+    "Webpack": {
+      "prereqs": ["JavaScript"],
+      "resources": [{"title": "webpack 공식 개념", "url": "https://webpack.js.org/concepts/", "type": "doc", "verified": true}],
+      "typical_hours": 10
+    },
+    "브라우저 렌더링 원리": {
+      "prereqs": ["HTML/CSS", "JavaScript"],
+      "resources": [{"title": "MDN: 중요 렌더링 경로", "url": "https://developer.mozilla.org/en-US/docs/Web/Performance/Critical_rendering_path", "type": "doc", "verified": true}],
+      "typical_hours": 8
+    },
+    "Jest": {
+      "prereqs": ["JavaScript"],
+      "resources": [{"title": "Jest 공식 시작하기", "url": "https://jestjs.io/docs/getting-started", "type": "doc", "verified": true}],
+      "typical_hours": 10
+    },
+    "Axios/Fetch API": {
+      "prereqs": ["JavaScript", "HTTP 기초"],
+      "resources": [{"title": "MDN: Fetch API 사용하기", "url": "https://developer.mozilla.org/ko/docs/Web/API/Fetch_API/Using_Fetch", "type": "doc", "verified": true}],
+      "typical_hours": 6
+    },
+    "통계 기초": {
+      "prereqs": [],
+      "resources": [{"title": "Khan Academy: Statistics & Probability", "url": "https://www.khanacademy.org/math/statistics-probability", "type": "course", "verified": true}],
+      "typical_hours": 25
+    },
+    "pandas": {
+      "prereqs": ["Python"],
+      "resources": [{"title": "pandas Getting Started", "url": "https://pandas.pydata.org/docs/getting_started/index.html", "type": "doc", "verified": true}],
+      "typical_hours": 20
+    },
+    "NumPy": {
+      "prereqs": ["Python"],
+      "resources": [{"title": "NumPy: the absolute basics", "url": "https://numpy.org/doc/stable/user/absolute_beginners.html", "type": "doc", "verified": true}],
+      "typical_hours": 12
+    },
+    "데이터 시각화": {
+      "prereqs": ["pandas"],
+      "resources": [{"title": "Matplotlib 튜토리얼", "url": "https://matplotlib.org/stable/tutorials/index.html", "type": "doc", "verified": true}],
+      "typical_hours": 12
+    },
+    "머신러닝 기초": {
+      "prereqs": ["pandas", "통계 기초"],
+      "resources": [{"title": "scikit-learn Getting Started", "url": "https://scikit-learn.org/stable/getting_started.html", "type": "doc", "verified": true}],
+      "typical_hours": 40
+    },
+    "Airflow": {
+      "prereqs": ["Python"],
+      "resources": [{"title": "Apache Airflow 시작하기", "url": "https://airflow.apache.org/docs/apache-airflow/stable/start.html", "type": "doc", "verified": true}],
+      "typical_hours": 15
+    },
+    "Spark": {
+      "prereqs": ["Python"],
+      "resources": [{"title": "Apache Spark Quick Start", "url": "https://spark.apache.org/docs/latest/quick-start.html", "type": "doc", "verified": true}],
+      "typical_hours": 25
+    }
+  },
+  "roles": {
+    "백엔드 개발자": ["Python", "객체지향 프로그래밍", "HTTP 기초", "REST API 설계", "FastAPI", "SQL 기초", "PostgreSQL", "ORM", "Docker", "Git", "테스트 코드", "Linux 기초"],
+    "프론트엔드 개발자": ["HTML/CSS", "JavaScript", "TypeScript", "React", "상태관리", "반응형 디자인", "Axios/Fetch API", "브라우저 렌더링 원리", "Webpack", "Git"],
+    "풀스택 개발자": ["HTML/CSS", "JavaScript", "TypeScript", "React", "Node.js", "Express", "REST API 설계", "SQL 기초", "Git"],
+    "데이터 분석가": ["Python", "SQL 기초", "pandas", "NumPy", "통계 기초", "데이터 시각화", "Git"],
+    "데이터 엔지니어": ["Python", "SQL 기초", "PostgreSQL", "Airflow", "Spark", "Docker", "Git"],
+    "머신러닝 엔지니어": ["Python", "pandas", "NumPy", "통계 기초", "머신러닝 기초", "SQL 기초", "Git"],
+    "DevOps 엔지니어": ["Linux 기초", "Docker", "Kubernetes", "CI/CD", "AWS 기초", "Terraform", "Nginx", "Git"]
+  },
+  "role_aliases": {
+    "프론트엔드 엔지니어": "프론트엔드 개발자",
+    "프론트 개발자": "프론트엔드 개발자",
+    "프론트엔드": "프론트엔드 개발자",
+    "프론트": "프론트엔드 개발자",
+    "frontend developer": "프론트엔드 개발자",
+    "frontend engineer": "프론트엔드 개발자",
+    "front-end developer": "프론트엔드 개발자",
+    "웹 프론트엔드 개발자": "프론트엔드 개발자",
+    "백엔드 엔지니어": "백엔드 개발자",
+    "백엔드": "백엔드 개발자",
+    "서버 개발자": "백엔드 개발자",
+    "backend developer": "백엔드 개발자",
+    "backend engineer": "백엔드 개발자",
+    "back-end developer": "백엔드 개발자",
+    "풀스택 엔지니어": "풀스택 개발자",
+    "풀스택": "풀스택 개발자",
+    "풀 스택 개발자": "풀스택 개발자",
+    "fullstack developer": "풀스택 개발자",
+    "full stack developer": "풀스택 개발자",
+    "full-stack developer": "풀스택 개발자",
+    "데이터분석가": "데이터 분석가",
+    "데이터 애널리스트": "데이터 분석가",
+    "data analyst": "데이터 분석가",
+    "데이터엔지니어": "데이터 엔지니어",
+    "data engineer": "데이터 엔지니어",
+    "머신러닝 개발자": "머신러닝 엔지니어",
+    "ml 엔지니어": "머신러닝 엔지니어",
+    "ml engineer": "머신러닝 엔지니어",
+    "machine learning engineer": "머신러닝 엔지니어",
+    "ai 엔지니어": "머신러닝 엔지니어",
+    "인공지능 엔지니어": "머신러닝 엔지니어",
+    "devops": "DevOps 엔지니어",
+    "devops engineer": "DevOps 엔지니어",
+    "데브옵스": "DevOps 엔지니어",
+    "데브옵스 엔지니어": "DevOps 엔지니어",
+    "인프라 엔지니어": "DevOps 엔지니어"
+  },
+  "aliases": {
+    "py": "Python",
+    "python3": "Python",
+    "파이썬": "Python",
+    "java": "Java",
+    "자바": "Java",
+    "spring": "Spring",
+    "스프링": "Spring",
+    "spring boot": "Spring Boot",
+    "springboot": "Spring Boot",
+    "스프링부트": "Spring Boot",
+    "fastapi": "FastAPI",
+    "fast api": "FastAPI",
+    "django": "Django",
+    "flask": "Flask",
+    "postgres": "PostgreSQL",
+    "postgresql": "PostgreSQL",
+    "psql": "PostgreSQL",
+    "mysql": "MySQL",
+    "mongo": "MongoDB",
+    "mongodb": "MongoDB",
+    "sql": "SQL 기초",
+    "rest": "REST API 설계",
+    "rest api": "REST API 설계",
+    "restful": "REST API 설계",
+    "graphql": "GraphQL",
+    "oop": "객체지향 프로그래밍",
+    "docker": "Docker",
+    "k8s": "Kubernetes",
+    "kubernetes": "Kubernetes",
+    "쿠버네티스": "Kubernetes",
+    "nginx": "Nginx",
+    "terraform": "Terraform",
+    "redis": "Redis",
+    "kafka": "Kafka",
+    "카프카": "Kafka",
+    "git": "Git",
+    "github": "Git",
+    "linux": "Linux 기초",
+    "pytest": "테스트 코드",
+    "ci/cd": "CI/CD",
+    "cicd": "CI/CD",
+    "aws": "AWS 기초",
+    "node": "Node.js",
+    "nodejs": "Node.js",
+    "node.js": "Node.js",
+    "express": "Express",
+    "expressjs": "Express",
+    "html": "HTML/CSS",
+    "css": "HTML/CSS",
+    "html/css": "HTML/CSS",
+    "js": "JavaScript",
+    "javascript": "JavaScript",
+    "자바스크립트": "JavaScript",
+    "ts": "TypeScript",
+    "typescript": "TypeScript",
+    "타입스크립트": "TypeScript",
+    "react.js": "React",
+    "reactjs": "React",
+    "react": "React",
+    "리액트": "React",
+    "vue": "Vue",
+    "vue.js": "Vue",
+    "vuejs": "Vue",
+    "next": "Next.js",
+    "next.js": "Next.js",
+    "nextjs": "Next.js",
+    "redux": "상태관리",
+    "zustand": "상태관리",
+    "recoil": "상태관리",
+    "sass": "Sass",
+    "scss": "Sass",
+    "tailwind": "Tailwind CSS",
+    "tailwindcss": "Tailwind CSS",
+    "tailwind css": "Tailwind CSS",
+    "webpack": "Webpack",
+    "jest": "Jest",
+    "axios": "Axios/Fetch API",
+    "fetch": "Axios/Fetch API",
+    "자료구조와 알고리즘": "자료구조",
+    "pandas": "pandas",
+    "판다스": "pandas",
+    "numpy": "NumPy",
+    "넘파이": "NumPy",
+    "통계": "통계 기초",
+    "statistics": "통계 기초",
+    "시각화": "데이터 시각화",
+    "matplotlib": "데이터 시각화",
+    "seaborn": "데이터 시각화",
+    "ml": "머신러닝 기초",
+    "머신러닝": "머신러닝 기초",
+    "machine learning": "머신러닝 기초",
+    "scikit-learn": "머신러닝 기초",
+    "sklearn": "머신러닝 기초",
+    "airflow": "Airflow",
+    "spark": "Spark",
+    "pyspark": "Spark"
+  }
+}

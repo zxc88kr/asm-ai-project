@@ -1,0 +1,9 @@
+# python cache
+__pycache__/
+*.pyc
+
+# python 가상 환경
+myenv
+
+# 환경 변수 (api키)
+.env

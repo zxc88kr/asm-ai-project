@@ -1,0 +1,33 @@
+services:
+  # gateway (진입점)
+  gateway:
+    image: nginx:alpine
+    container_name: gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+  # frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+
+  # backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile 
+    container_name: backend
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped # 멈추지 않도록
+
+  # db - 필요하다면

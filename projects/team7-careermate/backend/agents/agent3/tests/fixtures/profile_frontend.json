@@ -1,0 +1,17 @@
+{
+  "major": "컴퓨터공학과 3학년",
+  "current_status": "재학 중",
+  "interests": ["프론트엔드 개발"],
+  "owned_skills": ["JavaScript", "HTML/CSS"],
+  "target_role": "프론트엔드 개발자",
+  "company_type": "스타트업",
+  "weekly_hours": 8,
+  "concern": ["프레임워크 실무 경험이 없습니다."],
+  "summary": "JavaScript 기초를 보유한 컴퓨터공학 전공생으로, 프론트엔드 개발을 목표로 하나 프레임워크 실무 경험이 없습니다.",
+  "strengths": ["전공 일치도", "프론트엔드 관심 적합성"],
+  "weaknesses": ["프레임워크 실무 경험 부족"],
+  "evidence": {
+    "전공 일치도": "major: '컴퓨터공학과 3학년'",
+    "프레임워크 실무 경험 부족": "concern: ['프레임워크 실무 경험이 없습니다.']"
+  }
+}

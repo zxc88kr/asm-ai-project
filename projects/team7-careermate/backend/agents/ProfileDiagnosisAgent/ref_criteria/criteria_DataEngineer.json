@@ -1,0 +1,33 @@
+{
+  "common_requirements": [
+    "Python과 SQL을 활용한 데이터 수집, 정제, 변환, 적재 경험",
+    "Airflow 기반 DAG 작성 및 배치 데이터 파이프라인 자동화 경험",
+    "Spark 또는 PySpark를 활용한 대용량 데이터 처리 경험",
+    "Kafka 기반 사용자 이벤트 로그 수집 및 스트리밍 데이터 처리 경험",
+    "ETL 및 ELT 파이프라인을 설계하고 운영한 경험",
+    "Raw, Staging, Warehouse, Mart 계층으로 데이터 저장 구조를 분리하여 설계한 경험",
+    "Data Warehouse와 Data Mart를 설계하여 분석과 제품 의사결정에 활용 가능한 데이터셋을 제공한 경험",
+    "PostgreSQL, MySQL, BigQuery, Redshift 등 관계형 데이터베이스 및 데이터 웨어하우스 활용 경험",
+    "AWS S3, Glue, Athena, Redshift, EC2 등 클라우드 기반 데이터 인프라 활용 경험",
+    "Docker와 Docker Compose를 활용한 데이터 파이프라인 실행 환경 구성 경험",
+    "서비스 로그, 사용자 이벤트, 주문 데이터, 리뷰 데이터, 캠페인 데이터 등 다양한 source 데이터를 통합한 경험",
+    "사용자 행동 이벤트 스키마를 설계하고 event_name, user_id, session_id, event_time, properties 등 공통 구조를 정의한 경험",
+    "중복 데이터 제거, idempotent load, upsert strategy, backfill 등 재처리 가능한 데이터 파이프라인 설계 경험",
+    "데이터 품질 검증 rule을 작성하여 null ratio, duplicate key, row count, date range, freshness, referential integrity 등을 점검한 경험",
+    "Great Expectations 또는 자체 SQL rule을 활용한 데이터 품질 검증 및 이상 탐지 경험",
+    "Pipeline 실패 시 Slack alert, Airflow SLA, retry policy 등을 활용해 장애 인지 및 대응 시간을 줄인 경험",
+    "데이터 신선도, 파이프라인 실패, row count 급감, null 비율 증가 등 운영 모니터링 경험",
+    "Partitioning, clustering, indexing, aggregation mart 등을 활용한 쿼리 성능 최적화 경험",
+    "BigQuery 비용 최적화, partition pruning, 오래된 raw log archive 등 비용 효율적인 데이터 처리 경험",
+    "Metabase, Superset, Looker Studio 등을 활용한 Dashboard 구축 및 데이터 시각화 경험",
+    "Activation, retention, conversion, funnel, cohort, campaign attribution 등 제품 지표 정의 및 분석용 mart table 설계 경험",
+    "분석가, PM, 백엔드 개발자, ML 엔지니어와 협업하여 지표 정의, 이벤트 스키마, feature table을 조율한 경험",
+    "ML 모델 학습을 위한 사용자 클릭, 구매, 선호도, 행동 로그 기반 feature table 제공 경험",
+    "데이터 지표 불일치 문제를 해결하기 위해 기준 정의와 데이터 모델을 문서화한 경험",
+    "수동 SQL 리포트 작성이나 반복 집계 작업을 자동화하여 분석 업무 효율을 개선한 경험",
+    "일 평균 수백만~수천만 건 규모의 이벤트 또는 로그 데이터를 처리하는 파이프라인 구축 경험",
+    "데이터 파이프라인을 단순히 작동시키는 것을 넘어 신뢰성, 재처리 가능성, 품질, 모니터링, 비용까지 함께 고려한 경험",
+    "SQL window function, 집계 쿼리, cohort table, funnel table 등을 활용한 분석용 데이터 모델링 경험",
+    "데이터 엔지니어링 스터디, 기술 글 작성, 코드 리뷰 등을 통해 Airflow, Spark, Kafka, dbt, Data Warehouse, Data Quality 역량을 정리하고 공유한 경험"
+  ]
+}

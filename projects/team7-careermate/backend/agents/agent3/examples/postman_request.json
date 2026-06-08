@@ -1,0 +1,33 @@
+{
+  "profile": {
+    "major": "컴퓨터공학과 4학년 재학",
+    "current_status": "재학생",
+    "interests": ["프론트엔드 개발", "UI/UX"],
+    "owned_skills": ["HTML/CSS", "JavaScript"],
+    "target_role": "프론트엔드 엔지니어",
+    "company_type": "스타트업",
+    "weekly_hours": 15,
+    "concern": ["실무 프로젝트 협업 경험이 부족합니다", "포트폴리오 작성이 걱정입니다"],
+    "summary": "컴퓨터공학 전공의 4학년 재학생으로, 프론트엔드 개발과 UI/UX에 관심이 있으며 HTML/CSS, JavaScript를 보유하고 있습니다. 프론트엔드 엔지니어를 목표로 하며 주당 15시간을 학습에 쓸 수 있으나, 실무 협업 경험과 포트폴리오에 대한 고민이 있습니다.",
+    "strengths": ["전공 일치도", "높은 학습 시간", "기술 보유"],
+    "weaknesses": ["실무 협업 경험 부족", "포트폴리오 작성 고민"],
+    "evidence": {
+      "전공 일치도": "major: '컴퓨터공학과 4학년 재학' && target_role: '프론트엔드 엔지니어'",
+      "기술 보유": "owned_skills: ['HTML/CSS', 'JavaScript']",
+      "실무 협업 경험 부족": "concern: ['실무 프로젝트 협업 경험이 부족합니다']"
+    }
+  },
+  "job_requirement": {
+    "companies": [{ "name": "예시테크", "url": "https://example.com/jobs/fe" }],
+    "required_skills": [
+      "React로 화면을 컴포넌트 기반으로 구현하는 능력",
+      "TypeScript로 타입 안전한 코드를 작성하는 능력"
+    ],
+    "preferred_skills": [
+      "상태관리 라이브러리 사용 경험",
+      "Next.js로 SSR/SSG를 구현한 경험"
+    ],
+    "required_experience": ["웹 프론트엔드 프로젝트 경험 1개 이상"],
+    "keywords": ["React", "TypeScript", "상태관리", "Next.js"]
+  }
+}

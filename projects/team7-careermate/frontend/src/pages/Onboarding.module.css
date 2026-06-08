@@ -1,0 +1,312 @@
+.stepperWrap {
+  padding: 8px 0 32px;
+}
+
+.headerRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin: 0 0 8px;
+}
+
+.wave {
+  margin-right: 4px;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.hintCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: var(--primary-softer);
+  border: 1px solid #e7e9ff;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  padding: 18px 18px 20px;
+}
+
+.fileField {
+  grid-column: 1 / -1;
+  border: 1px dashed #c7d2fe;
+  background: linear-gradient(180deg, #fbfcff 0%, #f7f8ff 100%);
+}
+
+.fieldLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.fieldIcon {
+  color: var(--primary);
+  display: inline-flex;
+}
+
+.requiredBadge {
+  margin-left: auto;
+  padding: 3px 7px;
+  border-radius: var(--radius-pill);
+  background: #eef2ff;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.inlineSelects {
+  display: flex;
+  gap: 8px;
+}
+
+.fileInputWrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 12px;
+  border: 1px solid #e0e7ff;
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.fileButton {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fileName {
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileClear {
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fileClear:hover {
+  color: var(--primary);
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-height: 38px;
+}
+
+.tagRemove {
+  display: inline-flex;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary);
+  opacity: 0.7;
+}
+.tagRemove:hover {
+  opacity: 1;
+}
+
+.tagAddWrap {
+  position: relative;
+}
+
+.tagAdd {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-pill);
+  border: 1px dashed var(--border-strong);
+  background: #fff;
+  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+}
+.tagAdd:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.tagAdd:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.picker {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-pop);
+  padding: 4px;
+  min-width: 130px;
+}
+
+.pickerItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+.pickerItem:hover {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.concernSection {
+  margin-top: 28px;
+}
+
+.concernTitle {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.concernGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.concernChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: all 0.12s ease;
+}
+.concernChip:hover {
+  border-color: var(--primary);
+}
+
+.concernChipOn {
+  background: var(--primary-soft);
+  border-color: transparent;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.concernCheck {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+}
+
+.submitRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.error {
+  margin-top: 20px;
+  color: #dc2626;
+  font-size: 14px;
+}

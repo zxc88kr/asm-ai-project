@@ -1,0 +1,381 @@
+{
+  "final_output": {
+    "profile": {
+      "summary": "JavaScript 기초를 보유했으나 프레임워크 실무 경험이 없습니다.",
+      "strengths": [
+        "JavaScript",
+        "HTML/CSS"
+      ],
+      "weaknesses": [
+        "React",
+        "TypeScript"
+      ],
+      "interests": [
+        "프론트엔드 개발"
+      ],
+      "readiness_level": "mid",
+      "evidence": {
+        "JavaScript": "owned_skills에 명시"
+      }
+    },
+    "gap_analysis": {
+      "gaps": [
+        {
+          "skill": "React",
+          "priority": "high",
+          "current_level": "없음",
+          "target_level": "실무",
+          "skill_status": "known",
+          "verified": true
+        },
+        {
+          "skill": "TypeScript",
+          "priority": "high",
+          "current_level": "없음",
+          "target_level": "실무",
+          "skill_status": "known",
+          "verified": true
+        },
+        {
+          "skill": "상태관리",
+          "priority": "medium",
+          "current_level": "없음",
+          "target_level": "실무",
+          "skill_status": "known",
+          "verified": true
+        }
+      ],
+      "job_evidence_strength": "strong",
+      "needs_rerun": false,
+      "rerun_reason": null
+    },
+    "roadmap": {
+      "horizon": "weeks_8",
+      "total_weeks": 8,
+      "weeks": [
+        {
+          "week_index": 1,
+          "objectives": [
+            "JavaScript 기초 문법 학습"
+          ],
+          "tasks": [
+            {
+              "title": "JavaScript 기초 문법 학습",
+              "skill": "JavaScript",
+              "resources": [
+                {
+                  "title": "MDN: JavaScript 가이드",
+                  "url": "https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                },
+                {
+                  "title": "모던 JavaScript 튜토리얼",
+                  "url": "https://ko.javascript.info/",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 8,
+              "verified": true
+            }
+          ],
+          "covered_skills": [
+            "JavaScript"
+          ],
+          "planned_hours": 8
+        },
+        {
+          "week_index": 2,
+          "objectives": [
+            "JavaScript 심화 및 DOM 조작"
+          ],
+          "tasks": [
+            {
+              "title": "JavaScript 심화 및 DOM 조작",
+              "skill": "JavaScript",
+              "resources": [
+                {
+                  "title": "MDN: JavaScript 가이드",
+                  "url": "https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                },
+                {
+                  "title": "모던 JavaScript 튜토리얼",
+                  "url": "https://ko.javascript.info/",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 8,
+              "verified": true
+            }
+          ],
+          "covered_skills": [
+            "JavaScript"
+          ],
+          "planned_hours": 8
+        },
+        {
+          "week_index": 3,
+          "objectives": [
+            "React 기본 개념 및 컴포넌트 학습"
+          ],
+          "tasks": [
+            {
+              "title": "React 기본 개념 및 컴포넌트 학습",
+              "skill": "React",
+              "resources": [
+                {
+                  "title": "React 공식 문서 (학습)",
+                  "url": "https://react.dev/learn",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 8,
+              "verified": true
+            }
+          ],
+          "covered_skills": [
+            "React"
+          ],
+          "planned_hours": 8
+        },
+        {
+          "week_index": 4,
+          "objectives": [
+            "React 심화 및 상태 관리 기초"
+          ],
+          "tasks": [
+            {
+              "title": "React 심화 및 상태 관리 기초",
+              "skill": "React",
+              "resources": [
+                {
+                  "title": "React 공식 문서 (학습)",
+                  "url": "https://react.dev/learn",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 8,
+              "verified": true
+            }
+          ],
+          "covered_skills": [
+            "React"
+          ],
+          "planned_hours": 8
+        },
+        {
+          "week_index": 5,
+          "objectives": [
+            "TypeScript 기초 문법 학습"
+          ],
+          "tasks": [
+            {
+              "title": "TypeScript 기초 문법 학습",
+              "skill": "TypeScript",
+              "resources": [
+                {
+                  "title": "TypeScript 공식 핸드북",
+                  "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 8,
+              "verified": true
+            }
+          ],
+          "covered_skills": [
+            "TypeScript"
+          ],
+          "planned_hours": 8
+        },
+        {
+          "week_index": 6,
+          "objectives": [
+            "React와 TypeScript 통합 프로젝트"
+          ],
+          "tasks": [
+            {
+              "title": "React와 TypeScript 통합 프로젝트",
+              "skill": "React",
+              "resources": [
+                {
+                  "title": "React 공식 문서 (학습)",
+                  "url": "https://react.dev/learn",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 4,
+              "verified": true
+            },
+            {
+              "title": "React와 TypeScript 통합 프로젝트",
+              "skill": "TypeScript",
+              "resources": [
+                {
+                  "title": "TypeScript 공식 핸드북",
+                  "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 4,
+              "verified": true
+            }
+          ],
+          "covered_skills": [
+            "React",
+            "TypeScript"
+          ],
+          "planned_hours": 8
+        },
+        {
+          "week_index": 7,
+          "objectives": [
+            "상태관리 심화 및 Context API 학습"
+          ],
+          "tasks": [
+            {
+              "title": "상태관리 심화 및 Context API 학습",
+              "skill": "상태관리",
+              "resources": [
+                {
+                  "title": "Redux Toolkit 공식 튜토리얼",
+                  "url": "https://redux-toolkit.js.org/tutorials/quick-start",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                },
+                {
+                  "title": "Zustand 공식 문서",
+                  "url": "https://zustand.docs.pmnd.rs/",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 8,
+              "verified": true
+            }
+          ],
+          "covered_skills": [
+            "상태관리"
+          ],
+          "planned_hours": 8
+        },
+        {
+          "week_index": 8,
+          "objectives": [
+            "상태관리 심화 및 Redux 학습"
+          ],
+          "tasks": [
+            {
+              "title": "상태관리 심화 및 Redux 학습",
+              "skill": "상태관리",
+              "resources": [
+                {
+                  "title": "Redux Toolkit 공식 튜토리얼",
+                  "url": "https://redux-toolkit.js.org/tutorials/quick-start",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                },
+                {
+                  "title": "Zustand 공식 문서",
+                  "url": "https://zustand.docs.pmnd.rs/",
+                  "type": "doc",
+                  "verified": true,
+                  "origin": "db",
+                  "source_url": null
+                }
+              ],
+              "est_hours": 8,
+              "verified": true
+            }
+          ],
+          "covered_skills": [
+            "상태관리"
+          ],
+          "planned_hours": 8
+        }
+      ],
+      "weekly_hours_budget": 8,
+      "rationale": "React와 TypeScript는 JavaScript 선행이 필요하며, 상태관리는 React 선행이 필요합니다. 주당 8시간 가용시간을 기준으로 총 8주 동안 모든 역량을 커버하도록 배분했습니다."
+    },
+    "verified": true,
+    "trace_summary": [
+      {
+        "node": "progress_reconciliation",
+        "input_summary": "new_user 또는 직전 로드맵 없음",
+        "decision": "skip_reconcile",
+        "tool_called": null,
+        "output_summary": "이월/완료 컨텍스트 없음",
+        "ts": "2026-06-05T05:24:00.742307+00:00"
+      },
+      {
+        "node": "gap_analysis",
+        "input_summary": "강점 2개 vs 필수 2개, evidence=strong",
+        "decision": "skip_rerun",
+        "tool_called": "lookup_skill",
+        "output_summary": "gaps=[React(high), TypeScript(high), 상태관리(medium)], needs_rerun=False, verified=True, search_count=0",
+        "ts": "2026-06-05T05:24:07.234302+00:00"
+      },
+      {
+        "node": "roadmap_plan",
+        "input_summary": "gaps=3, weekly_hours=8, total_weeks=8, revision=0",
+        "decision": null,
+        "tool_called": "lookup_skill",
+        "output_summary": "horizon=weeks_8, weeks=8, verified=True",
+        "ts": "2026-06-05T05:24:18.155539+00:00"
+      },
+      {
+        "node": "roadmap_critic",
+        "input_summary": "revision_count=0, weeks=8",
+        "decision": "pass",
+        "tool_called": null,
+        "output_summary": "verdict=pass, violations=[위반 없음]",
+        "ts": "2026-06-05T05:24:18.155539+00:00"
+      },
+      {
+        "node": "finalize",
+        "input_summary": "verified=True, revision_count=0",
+        "decision": null,
+        "tool_called": null,
+        "output_summary": "FinalOutput 조립 완료, weeks=8",
+        "ts": "2026-06-05T05:24:18.155539+00:00"
+      }
+    ],
+    "disclaimer": "이 로드맵은 학습 방향 제안이며 합격이나 진로를 보장하지 않습니다.",
+    "search_degraded": false
+  },
+  "needs_rerun": false,
+  "rerun_reason": null
+}

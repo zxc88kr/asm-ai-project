@@ -1,0 +1,722 @@
+{
+  "horizon": "weeks_8",
+  "total_weeks": 8,
+  "weeks": [
+    {
+      "week_index": 1,
+      "objectives": [
+        "JavaScript 짧은 복습",
+        "React 기초 학습"
+      ],
+      "tasks": [
+        {
+          "title": "JavaScript 짧은 복습",
+          "skill": "JavaScript",
+          "resources": [
+            {
+              "title": "MDN: JavaScript 가이드",
+              "url": "https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            },
+            {
+              "title": "모던 JavaScript 튜토리얼",
+              "url": "https://ko.javascript.info/",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 2,
+          "verified": true
+        },
+        {
+          "title": "React 기초 학습",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 6,
+          "verified": true
+        }
+      ],
+      "covered_skills": [
+        "JavaScript",
+        "React"
+      ],
+      "planned_hours": 8,
+      "phase": "기초 다지기"
+    },
+    {
+      "week_index": 2,
+      "objectives": [
+        "React 심화 학습",
+        "TypeScript 기초 학습"
+      ],
+      "tasks": [
+        {
+          "title": "React 심화 학습",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 5,
+          "verified": true
+        },
+        {
+          "title": "TypeScript 기초 학습",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 3,
+          "verified": true
+        }
+      ],
+      "covered_skills": [
+        "React",
+        "TypeScript"
+      ],
+      "planned_hours": 8,
+      "phase": "기초 다지기"
+    },
+    {
+      "week_index": 3,
+      "objectives": [
+        "TypeScript 심화 학습",
+        "상태관리 기초"
+      ],
+      "tasks": [
+        {
+          "title": "TypeScript 심화 학습",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        },
+        {
+          "title": "상태관리 기초",
+          "skill": "상태관리",
+          "resources": [
+            {
+              "title": "Redux Toolkit 공식 튜토리얼",
+              "url": "https://redux-toolkit.js.org/tutorials/quick-start",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            },
+            {
+              "title": "Zustand 공식 문서",
+              "url": "https://zustand.docs.pmnd.rs/",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        }
+      ],
+      "covered_skills": [
+        "TypeScript",
+        "상태관리"
+      ],
+      "planned_hours": 8,
+      "phase": "기초 다지기"
+    },
+    {
+      "week_index": 4,
+      "objectives": [
+        "React 고급 패턴",
+        "TypeScript 고급 패턴"
+      ],
+      "tasks": [
+        {
+          "title": "React 고급 패턴",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        },
+        {
+          "title": "TypeScript 고급 패턴",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        }
+      ],
+      "covered_skills": [
+        "React",
+        "TypeScript"
+      ],
+      "planned_hours": 8,
+      "phase": "핵심 역량 강화"
+    },
+    {
+      "week_index": 5,
+      "objectives": [
+        "상태관리 심화",
+        "React 프로젝트 설계"
+      ],
+      "tasks": [
+        {
+          "title": "상태관리 심화",
+          "skill": "상태관리",
+          "resources": [
+            {
+              "title": "Redux Toolkit 공식 튜토리얼",
+              "url": "https://redux-toolkit.js.org/tutorials/quick-start",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            },
+            {
+              "title": "Zustand 공식 문서",
+              "url": "https://zustand.docs.pmnd.rs/",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        },
+        {
+          "title": "React 프로젝트 설계",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        }
+      ],
+      "covered_skills": [
+        "상태관리",
+        "React"
+      ],
+      "planned_hours": 8,
+      "phase": "핵심 역량 강화"
+    },
+    {
+      "week_index": 6,
+      "objectives": [
+        "TypeScript 프로젝트 설계",
+        "React 프로젝트 구현"
+      ],
+      "tasks": [
+        {
+          "title": "TypeScript 프로젝트 설계",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        },
+        {
+          "title": "React 프로젝트 구현",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        }
+      ],
+      "covered_skills": [
+        "TypeScript",
+        "React"
+      ],
+      "planned_hours": 8,
+      "phase": "핵심 역량 강화"
+    },
+    {
+      "week_index": 7,
+      "objectives": [
+        "React 프로젝트 완성",
+        "TypeScript 프로젝트 완성"
+      ],
+      "tasks": [
+        {
+          "title": "React 프로젝트 완성",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        },
+        {
+          "title": "TypeScript 프로젝트 완성",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        }
+      ],
+      "covered_skills": [
+        "React",
+        "TypeScript"
+      ],
+      "planned_hours": 8,
+      "phase": "프로젝트 실전"
+    },
+    {
+      "week_index": 8,
+      "objectives": [
+        "포트폴리오 정리",
+        "면접 준비"
+      ],
+      "tasks": [
+        {
+          "title": "포트폴리오 정리",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        },
+        {
+          "title": "면접 준비",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4,
+          "verified": true
+        }
+      ],
+      "covered_skills": [
+        "React",
+        "TypeScript"
+      ],
+      "planned_hours": 8,
+      "phase": "포트폴리오 & 준비"
+    }
+  ],
+  "phases": [
+    {
+      "index": 1,
+      "title": "기초 다지기",
+      "week_from": 1,
+      "week_to": 2,
+      "items": [
+        {
+          "id": "p1-i1",
+          "label": "JavaScript 짧은 복습",
+          "skill": "JavaScript",
+          "resources": [
+            {
+              "title": "MDN: JavaScript 가이드",
+              "url": "https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            },
+            {
+              "title": "모던 JavaScript 튜토리얼",
+              "url": "https://ko.javascript.info/",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 2
+        },
+        {
+          "id": "p1-i2",
+          "label": "React 기초 학습",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 6
+        },
+        {
+          "id": "p1-i3",
+          "label": "React 심화 학습",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 5
+        },
+        {
+          "id": "p1-i4",
+          "label": "TypeScript 기초 학습",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "title": "핵심 역량 강화",
+      "week_from": 3,
+      "week_to": 4,
+      "items": [
+        {
+          "id": "p2-i1",
+          "label": "TypeScript 심화 학습",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p2-i2",
+          "label": "상태관리 기초",
+          "skill": "상태관리",
+          "resources": [
+            {
+              "title": "Redux Toolkit 공식 튜토리얼",
+              "url": "https://redux-toolkit.js.org/tutorials/quick-start",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            },
+            {
+              "title": "Zustand 공식 문서",
+              "url": "https://zustand.docs.pmnd.rs/",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p2-i3",
+          "label": "React 고급 패턴",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p2-i4",
+          "label": "TypeScript 고급 패턴",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "title": "프로젝트 실전",
+      "week_from": 5,
+      "week_to": 6,
+      "items": [
+        {
+          "id": "p3-i1",
+          "label": "상태관리 심화",
+          "skill": "상태관리",
+          "resources": [
+            {
+              "title": "Redux Toolkit 공식 튜토리얼",
+              "url": "https://redux-toolkit.js.org/tutorials/quick-start",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            },
+            {
+              "title": "Zustand 공식 문서",
+              "url": "https://zustand.docs.pmnd.rs/",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p3-i2",
+          "label": "React 프로젝트 설계",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p3-i3",
+          "label": "TypeScript 프로젝트 설계",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p3-i4",
+          "label": "React 프로젝트 구현",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "title": "포트폴리오 & 준비",
+      "week_from": 7,
+      "week_to": 8,
+      "items": [
+        {
+          "id": "p4-i1",
+          "label": "React 프로젝트 완성",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p4-i2",
+          "label": "TypeScript 프로젝트 완성",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p4-i3",
+          "label": "포트폴리오 정리",
+          "skill": "React",
+          "resources": [
+            {
+              "title": "React 공식 문서 (학습)",
+              "url": "https://react.dev/learn",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        },
+        {
+          "id": "p4-i4",
+          "label": "면접 준비",
+          "skill": "TypeScript",
+          "resources": [
+            {
+              "title": "TypeScript 공식 핸드북",
+              "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+              "type": "doc",
+              "verified": true,
+              "origin": "db",
+              "source_url": null
+            }
+          ],
+          "est_hours": 4
+        }
+      ]
+    }
+  ],
+  "weekly_hours_budget": 8,
+  "rationale": "총 8주 동안 주당 8시간을 기준으로 React, TypeScript, 상태관리 역량을 선후행 관계에 맞게 배치하여 균등하게 4단계로 구성했습니다."
+}

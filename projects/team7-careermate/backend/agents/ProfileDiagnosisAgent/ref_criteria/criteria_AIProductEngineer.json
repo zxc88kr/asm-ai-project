@@ -1,0 +1,24 @@
+{
+  "common_requirements": [
+    "LLM 기반 애플리케이션을 설계하고 실제 웹 서비스 형태로 구현한 경험",
+    "RAG 기반 문서 검색 및 질의응답 시스템을 구축한 경험",
+    "문서 chunking, embedding, vector search, answer generation으로 이어지는 end-to-end AI 파이프라인 구현 역량",
+    "LangChain, OpenAI API, Hugging Face, Sentence Transformers 등 LLM 및 AI 프레임워크 활용 경험",
+    "FastAPI 또는 Spring Boot를 활용한 AI 기능용 백엔드 API 개발 경험",
+    "React, TypeScript 기반 사용자 인터페이스 구현 및 AI 기능과의 연동 경험",
+    "PostgreSQL, Redis, Chroma, FAISS, Pinecone 등 데이터베이스와 벡터 검색 도구 활용 경험",
+    "AI 응답 품질을 개선하기 위해 retrieval precision, answer relevance, hallucination 등 평가 지표를 활용한 경험",
+    "프롬프트 엔지니어링과 프롬프트 평가를 통해 AI 응답 품질을 개선한 경험",
+    "사용자 질문 로그와 실패 케이스를 분석하여 AI 기능을 개선한 경험",
+    "AI 응답의 출처, confidence score, 문서 위치 등을 제공하여 신뢰도를 높인 경험",
+    "응답 지연시간과 API 비용을 줄이기 위한 캐싱, prompt compression, model routing 등의 최적화 경험",
+    "사용자 피드백 루프를 설계하여 thumbs up/down, 수정 결과, 실패 질문 등을 개선 데이터로 활용한 경험",
+    "제품 문제를 먼저 정의하고 AI 기능이 실제 사용자 문제를 해결하는지 지표로 검증한 경험",
+    "AI 기능을 단순 데모가 아니라 배포 가능한 서비스 구조로 구현한 경험",
+    "PM, 디자이너, 백엔드 개발자 등 다양한 직군과 협업하여 AI 기능을 제품 흐름 안에 통합한 경험",
+    "AI 문서 요약, 회의록 업무 추출, 리뷰 분석, 식단 추천 등 실제 사용자 시나리오 기반 AI 서비스 프로젝트 경험",
+    "사용자 행동 데이터, product metrics, A/B test, retention, conversion 등 제품 지표 기반 개선 경험",
+    "Docker, GitHub Actions, AWS EC2, AWS S3 등을 활용한 기본적인 배포 및 운영 환경 구성 경험",
+    "AI Product Engineer로서 모델 호출뿐 아니라 UX, 비용, 속도, 신뢰성, 평가, 피드백까지 함께 고려하는 역량"
+  ]
+}

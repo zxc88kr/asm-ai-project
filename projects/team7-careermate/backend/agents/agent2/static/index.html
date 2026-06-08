@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CareerMate Agent2</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Arial, "Malgun Gothic", sans-serif;
+        color: #1f2937;
+        background: #f6f7f9;
+      }
+      body {
+        margin: 0;
+        padding: 32px;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0 0 18px;
+      }
+      form, section {
+        background: #ffffff;
+        border: 1px solid #d8dde6;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      label {
+        display: block;
+        font-weight: 700;
+        margin: 14px 0 6px;
+      }
+      input, button, pre {
+        font: inherit;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #bcc5d1;
+        border-radius: 6px;
+        padding: 10px 12px;
+      }
+      button {
+        margin-top: 16px;
+        border: 0;
+        border-radius: 6px;
+        background: #2563eb;
+        color: white;
+        padding: 10px 14px;
+        cursor: pointer;
+      }
+      button:disabled {
+        background: #94a3b8;
+        cursor: wait;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        background: #111827;
+        color: #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        min-height: 160px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>CareerMate Agent2</h1>
+      <form id="agent-form">
+        <label for="target_role">목표직무</label>
+        <input id="target_role" name="target_role" value="백엔드 개발자" required />
+
+        <label for="company_type">희망기업유형</label>
+        <input id="company_type" name="company_type" value="스타트업" />
+
+        <label for="max_results">검색 공고 수</label>
+        <input id="max_results" name="max_results" type="number" value="5" min="1" max="10" />
+
+        <button id="submit" type="submit">채용공고 검색 및 정리</button>
+      </form>
+
+      <section>
+        <strong>결과</strong>
+        <pre id="output">아직 실행 전입니다.</pre>
+      </section>
+    </main>
+
+    <script>
+      const form = document.querySelector("#agent-form");
+      const output = document.querySelector("#output");
+      const submit = document.querySelector("#submit");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        submit.disabled = true;
+        output.textContent = "검색하고 정리하는 중입니다...";
+
+        const payload = {
+          target_role: form.target_role.value.trim(),
+          company_type: form.company_type.value.trim() || null,
+          max_results: Number(form.max_results.value) || 5,
+        };
+
+        try {
+          const response = await fetch("/agent2/job-requirement", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await response.json();
+          console.log("Agent2 result", data);
+          output.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+          output.textContent = String(error);
+        } finally {
+          submit.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
