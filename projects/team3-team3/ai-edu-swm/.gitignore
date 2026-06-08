@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+*.tsbuildinfo
+.pytest_cache/
+.streamlit/secrets.toml
+node_modules/
+frontend/dist/
+coverage/
+.openai-oauth/
+.google-calendar-token.json
+google-credentials.json
