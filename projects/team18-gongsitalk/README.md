@@ -470,3 +470,31 @@ asm-ai-18team/
 - 사용자가 직접 기업 후보를 선택하는 기능
 - 시연/운영용 로그 파일 저장 옵션
 - 안전장치 테스트 케이스 확대
+
+## 16. Docker 실행
+
+프론트엔드(Streamlit)와 백엔드(FastAPI)를 한 번에 실행하려면 프로젝트 루트에 `.env` 파일을 준비한 뒤 아래 명령을 실행한다.
+
+```bash
+docker compose up --build
+```
+
+기본 접속 주소:
+
+- Streamlit: `http://localhost:8501`
+- FastAPI: `http://localhost:8000`
+- FastAPI 문서: `http://localhost:8000/docs`
+
+Docker Compose 안에서는 프론트엔드가 `GONGSITALK_BACKEND_URL=http://backend:8000`으로 백엔드 컨테이너에 연결한다. `data/` 디렉터리는 컨테이너에 마운트되어 OpenDART 기업 코드 캐시가 재시작 후에도 유지된다.
+
+백그라운드 실행:
+
+```bash
+docker compose up --build -d
+```
+
+종료:
+
+```bash
+docker compose down
+```
