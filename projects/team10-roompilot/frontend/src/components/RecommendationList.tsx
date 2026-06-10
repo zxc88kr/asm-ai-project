@@ -21,7 +21,7 @@ export default function RecommendationList({ onSelectListing, selectedId }: Prop
     return (
       <div className="card">
         <div className="card-head">
-          <h2>추천 매물 TOP 3</h2>
+          <h2>추천 매물 TOP 5</h2>
           <span style={{ fontSize: 11, color: 'var(--muted)' }}>전체 보기</span>
         </div>
         <p style={{ fontSize: 12, color: 'var(--muted)', padding: '4px 0', lineHeight: 1.6 }}>
@@ -34,7 +34,7 @@ export default function RecommendationList({ onSelectListing, selectedId }: Prop
   return (
     <div className="card">
       <div className="card-head">
-        <h2>추천 매물 TOP 3</h2>
+        <h2>추천 매물 TOP 5</h2>
         <button className="card-link" type="button">
           전체 보기
         </button>
@@ -43,17 +43,16 @@ export default function RecommendationList({ onSelectListing, selectedId }: Prop
         {lastTop.map((sl, idx) => (
           <li
             key={sl.L.id}
-            className={`rec-item${idx === 0 ? ' top1' : ''}${selectedId === sl.L.id ? ' selected' : ''}`}
+            className={`rec-item${selectedId === sl.L.id ? ' selected' : ''}`}
             onClick={() => handleClick(sl)}
           >
-            <div className={`rank-badge${idx === 0 ? ' gold' : idx === 1 ? ' silver' : ' bronze'}`}>
+            <div className={`rank-badge ${sl.L.id === selectedId ? 'active' : 'inactive'}`}>
               {idx + 1}
             </div>
             <div className="thumb">{sl.L.thumb}</div>
             <div className="rec-body">
               <div className="flex items-center gap-2">
                 <div className="rec-name">{sl.L.name}</div>
-                <span className="rec-name-arrow">→</span>
               </div>
               <div className="rec-tags">
                 <span className="rec-tag">출퇴근 {sl.L.commuteMin}분</span>

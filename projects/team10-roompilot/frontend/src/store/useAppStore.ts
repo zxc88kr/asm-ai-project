@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { GREETING } from '../data/scenario'
 import { CONDITION_CARDS } from '../data/conditions'
 import { LISTINGS } from '../data/listings'
-import { postMessage, postRecommend } from '../services/agentApi'
+import { postMessage, postRecommend, postReset } from '../services/agentApi'
 import type {
   Listing,
   HardConstraints,
@@ -97,39 +97,41 @@ const CONV_KEYWORDS: Array<{ keyword: string; name: string; icon: string; defaul
 ]
 
 function agentToLocationAnalysis(item: AgentPropertyItem): LocationAnalysis {
-  const combined = item.description + ' ' + item.address_detail
-
-  const extractMin = (keyword: string, fallback: number): number => {
-    const m = combined.match(new RegExp(`${keyword}[^.]*?(\\d+)분`))
-    return m ? parseInt(m[1]) : fallback
-  }
-
   const scoreBreakdown = item.soft_card_matches.map(m => ({
     label: CARD_BREAKDOWN_LABEL[m.card] ?? m.card,
-    score: m.matched === true ? 90 : m.matched === 'partial' ? 60 : 30,
+    score: (m.score != null && m.max_score != null && m.max_score > 0)
+      ? Math.round((m.score / m.max_score) * 100)
+      : m.matched === true ? 100 : m.matched === 'partial' ? 50 : 0,
   }))
 
   const commute = {
-    legs: [{ label: item.transit_station, minutes: item.transit_walk_min, type: 'walk' as const }],
-    totalMinutes: item.transit_walk_min,
-    transfers: 0,
+    legs: item.commute_legs.length > 0
+      ? item.commute_legs
+      : [{ label: item.transit_station, minutes: item.transit_walk_min, type: 'walk' as const }],
+    totalMinutes: item.commute_total_minutes ?? item.transit_walk_min,
+    transfers: Math.max(0, item.commute_legs.filter(l => l.type !== 'walk').length - 1),
     mainNote: item.address_detail,
   }
 
-  const hasCctv = item.facilities.includes('CCTV')
-  const isBasement = combined.includes('반지하') || combined.includes('지하')
-  const hasGoodLight = combined.includes('채광') || combined.includes('햇볕') || combined.includes('조망')
-  const hasNearby = combined.includes('편의점') || combined.includes('마트')
+  const nightSafety: NightSafetyItem[] = item.night_safety.length > 0
+    ? item.night_safety
+    : (() => {
+        const combined = item.description + ' ' + item.address_detail
+        const hasCctv = item.facilities.includes('CCTV')
+        const isBasement = combined.includes('반지하')
+        const hasNearby = combined.includes('편의점') || combined.includes('마트')
+        return [
+          { icon: 'camera', label: 'CCTV 설치', detail: hasCctv ? '건물 입구 CCTV 확인' : '정보 없음', pass: hasCctv },
+          { icon: 'sun', label: '채광/층수 양호', detail: isBasement ? '반지하 구조' : '일반 층수', pass: !isBasement },
+          { icon: 'store', label: '편의시설 근접', detail: hasNearby ? '편의점/마트 근거리' : '정보 없음', pass: hasNearby },
+        ]
+      })()
 
-  const nightSafety: NightSafetyItem[] = [
-    { icon: 'camera', label: 'CCTV 설치', detail: hasCctv ? '건물 입구 CCTV 확인' : '정보 없음', pass: hasCctv },
-    { icon: 'sun', label: '채광/층수 양호', detail: isBasement ? '반지하 구조' : hasGoodLight ? '채광 양호' : '일반 층수', pass: !isBasement },
-    { icon: 'store', label: '편의시설 근접', detail: hasNearby ? '편의점/마트 근거리' : '정보 없음', pass: hasNearby },
-  ]
-
-  const convenience: ConvenienceFacility[] = CONV_KEYWORDS
-    .filter(c => combined.includes(c.keyword))
-    .map(c => ({ name: c.name, walkMin: extractMin(c.keyword, c.defaultMin), icon: c.icon }))
+  const convenience: ConvenienceFacility[] = item.convenience.length > 0
+    ? item.convenience.map(c => ({ name: c.name, walkMin: c.walk_min, icon: c.icon }))
+    : CONV_KEYWORDS
+        .filter(c => (item.description + item.address_detail).includes(c.keyword))
+        .map(c => ({ name: c.name, walkMin: c.defaultMin, icon: c.icon }))
 
   const basis: RecommendationBasis[] = item.soft_card_matches
     .filter(m => m.matched === true || m.matched === 'partial')
@@ -148,7 +150,7 @@ function agentToLocationAnalysis(item: AgentPropertyItem): LocationAnalysis {
     .filter(m => m.matched === false && !SKIP.has(m.evidence))
     .map(m => m.evidence)
 
-  const aiComment = `${item.title}은(는) ${item.location}에 위치합니다. ${item.description.slice(0, 80)}${item.description.length > 80 ? '...' : ''}`
+  const aiComment = `${item.title}은(는) ${item.location}에 위치합니다. ${item.description.slice(0, 200)}${item.description.length > 200 ? '...' : ''}`
 
   return { commute, nightSafety, convenience, basis, pros, cons, aiComment, scoreBreakdown }
 }
@@ -167,7 +169,7 @@ function agentToScoredListing(item: AgentPropertyItem): ScoredListing {
     pyeong: 0,
     floor: 1,
     options: item.facilities,
-    commuteMin: item.transit_walk_min,
+    commuteMin: item.commute_total_minutes ?? item.transit_walk_min,
     night: { lit: true, mainRoad: true, alleyM: 0 },
     nightTransit: 'ok',
     thumb: THUMB_MAP[item.type] ?? '🏠',
@@ -199,6 +201,7 @@ interface AppState {
   messages: Message[]
   currentStep: number
   isTyping: boolean
+  isSearching: boolean
   activeView: ActiveView
   selectedListingId: string | null
   toastMessage: string | null
@@ -226,6 +229,7 @@ const useAppStore = create<AppState>((set, get) => ({
   messages: [{ role: 'ai', text: GREETING }],
   currentStep: 1,
   isTyping: false,
+  isSearching: false,
   activeView: 'chat',
   selectedListingId: null,
   toastMessage: null,
@@ -244,26 +248,77 @@ const useAppStore = create<AppState>((set, get) => ({
       const { monthly_rent, location_transport } = result.hard_conditions
       const { basement } = result.soft_conditions
 
-      set(s => {
-        const newHard: HardConstraints = { ...s.hard }
-        if (monthly_rent.max_manwon !== null) newHard.rent = monthly_rent.max_manwon
-        if (location_transport.commute_time_max_minutes !== null) newHard.commuteMax = location_transport.commute_time_max_minutes
-        if (basement.avoid === true) newHard.noBasement = true
+      const newHard: HardConstraints = { ...get().hard }
+      if (monthly_rent.max_manwon !== null) newHard.rent = monthly_rent.max_manwon
+      if (location_transport.commute_time_max_minutes !== null) newHard.commuteMax = location_transport.commute_time_max_minutes
+      if (basement.avoid === true) newHard.noBasement = true
 
-        const addCards: string[] = []
-        if (monthly_rent.max_manwon !== null && !s.cards.includes('budget_75')) addCards.push('budget_75')
-        if (location_transport.commute_time_max_minutes !== null && !s.cards.includes('gangnam_commute')) addCards.push('gangnam_commute')
-        if (basement.avoid === true && !s.cards.includes('no_basement')) addCards.push('no_basement')
+      const addCards: string[] = []
+      if (monthly_rent.max_manwon !== null && !get().cards.includes('budget_75')) addCards.push('budget_75')
+      if (location_transport.commute_time_max_minutes !== null && !get().cards.includes('gangnam_commute')) addCards.push('gangnam_commute')
+      if (basement.avoid === true && !get().cards.includes('no_basement')) addCards.push('no_basement')
 
-        return {
-          hard: newHard,
-          cards: [...s.cards, ...addCards],
-          isTyping: false,
-          agentConditions: result,
-          conditionsComplete: result.missing_required_conditions.length === 0,
-          messages: [...s.messages, { role: 'ai', text: result.next_question }],
+      // LLM이 recommend_listings로 판단 → 백엔드가 top_properties 포함해서 반환
+      if (result.top_properties !== undefined) {
+        if (result.top_properties.length > 0) {
+          const top = result.top_properties.map(agentToScoredListing)
+          const currentIds = (get().lastTop ?? []).map(sl => sl.L.id).join(',')
+          const newIds = top.map(sl => sl.L.id).join(',')
+          const isUpdated = get().recommended && newIds !== currentIds
+          const isRepeat = get().recommended && newIds === currentIds
+
+          if (isRepeat) {
+            set(s => ({
+              hard: newHard,
+              cards: [...s.cards, ...addCards],
+              isTyping: false,
+              agentConditions: result,
+              messages: [...s.messages, { role: 'ai' as const, text: '현재 조건에 맞는 매물이 우측에 표시돼 있어요. 조건을 더 추가하거나 변경해보세요!' }],
+            }))
+          } else {
+            const aiText = isUpdated
+              ? `조건을 반영해 매물을 다시 찾았어요. TOP ${top.length}을 우측에서 확인해보세요!`
+              : `맞춤 매물 TOP ${top.length}을 찾았어요. 우측에서 확인해보세요!`
+            set(s => ({
+              hard: newHard,
+              cards: [...s.cards, ...addCards],
+              isTyping: false,
+              agentConditions: result,
+              conditionsComplete: true,
+              lastTop: top,
+              agentListings: top.map(sl => sl.L),
+              recommended: true,
+              excludedCount: 0,
+              currentStep: 3,
+              messages: [
+                ...s.messages,
+                ...(isUpdated ? [] : [{ role: 'ai' as const, text: result.next_question }]),
+                { role: 'ai' as const, text: aiText },
+              ],
+            }))
+          }
+
+        } else {
+          set(s => ({
+            hard: newHard,
+            cards: [...s.cards, ...addCards],
+            isTyping: false,
+            agentConditions: result,
+            conditionsComplete: false,
+            messages: [...s.messages, { role: 'ai' as const, text: '입력하신 조건에 맞는 매물이 없어요. 예산이나 출퇴근 조건을 조정해볼까요?' }],
+          }))
         }
-      })
+        return
+      }
+
+      set(s => ({
+        hard: newHard,
+        cards: [...s.cards, ...addCards],
+        isTyping: false,
+        agentConditions: result,
+        conditionsComplete: result.missing_required_conditions.length === 0,
+        messages: [...s.messages, { role: 'ai', text: result.next_question }],
+      }))
     }).catch(() => {
       set(s => ({
         isTyping: false,
@@ -287,9 +342,9 @@ const useAppStore = create<AppState>((set, get) => ({
       const ok = scored
         .filter((s): s is { L: Listing } & Extract<ScoreResult, { excluded: false }> => !s.excluded)
         .sort((a, b) => b.score - a.score)
-      const top = ok.slice(0, 3)
-      set({ lastTop: top, recommended: true, excludedCount: scored.length - ok.length })
-      if (advanceSteps) {
+      const top = ok.slice(0, 5)
+      set({ lastTop: top, recommended: top.length > 0, excludedCount: scored.length - ok.length })
+      if (top.length > 0 && advanceSteps) {
         set({ currentStep: 2 })
         setTimeout(() => set({ currentStep: 3 }), 500)
       }
@@ -301,6 +356,7 @@ const useAppStore = create<AppState>((set, get) => ({
     }
 
     set(s => ({
+      isSearching: true,
       messages: [
         ...s.messages,
         { role: 'ai' as const, text: '조건에 맞는 매물을 검색하고 있어요...', searching: true },
@@ -309,7 +365,18 @@ const useAppStore = create<AppState>((set, get) => ({
 
     void postRecommend(agentConditions, sessionId).then(response => {
       const top = response.top_properties.map(agentToScoredListing)
+      if (top.length === 0) {
+        set(s => ({
+          isSearching: false,
+          messages: [
+            ...s.messages.filter(m => !m.searching),
+            { role: 'ai' as const, text: '입력하신 조건에 맞는 매물이 없어요. 예산이나 출퇴근 조건을 조정해볼까요?' },
+          ],
+        }))
+        return
+      }
       set(s => ({
+        isSearching: false,
         messages: [
           ...s.messages.filter(m => !m.searching),
           { role: 'ai' as const, text: `맞춤 매물 TOP ${top.length}을 찾았어요. 우측에서 확인해보세요!` },
@@ -324,7 +391,7 @@ const useAppStore = create<AppState>((set, get) => ({
         setTimeout(() => set({ currentStep: 3 }), 500)
       }
     }).catch(() => {
-      set(s => ({ messages: s.messages.filter(m => !m.searching) }))
+      set(s => ({ isSearching: false, messages: s.messages.filter(m => !m.searching) }))
       runLocal()
     })
   },
@@ -335,6 +402,7 @@ const useAppStore = create<AppState>((set, get) => ({
   },
 
   reset() {
+    void postReset(get().sessionId).catch(() => {})
     set({
       turn: 0,
       hard: {},
@@ -345,6 +413,7 @@ const useAppStore = create<AppState>((set, get) => ({
       messages: [{ role: 'ai', text: GREETING }],
       currentStep: 1,
       isTyping: false,
+      isSearching: false,
       activeView: 'chat',
       selectedListingId: null,
       toastMessage: null,

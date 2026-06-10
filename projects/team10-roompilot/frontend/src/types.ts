@@ -69,6 +69,8 @@ export interface Listing {
   thumb: string
   desc: string
   locationAnalysis: LocationAnalysis
+  lat?: number | null
+  lng?: number | null
 }
 
 export interface MatchResult {
@@ -122,6 +124,25 @@ export interface ScenarioStep {
   recommend?: boolean
 }
 
+export interface AgentCommuteLeg {
+  type: 'walk' | 'subway' | 'bus'
+  label: string
+  minutes: number
+}
+
+export interface AgentNightSafetyItem {
+  icon: string
+  label: string
+  detail: string
+  pass: boolean
+}
+
+export interface AgentConvenienceItem {
+  name: string
+  walk_min: number
+  icon: string
+}
+
 export interface AgentPropertyItem {
   property_id: string
   title: string
@@ -135,8 +156,14 @@ export interface AgentPropertyItem {
   facilities: string[]
   transit_walk_min: number
   transit_station: string
-  soft_card_matches: { card: string; matched: boolean | 'partial'; evidence: string }[]
+  soft_card_matches: { card: string; matched: boolean | 'partial'; evidence: string; score?: number; max_score?: number }[]
   agent_mode: string
+  lat?: number | null
+  lng?: number | null
+  commute_legs: AgentCommuteLeg[]
+  commute_total_minutes: number
+  night_safety: AgentNightSafetyItem[]
+  convenience: AgentConvenienceItem[]
 }
 
 export interface AgentRecommendResponse {
@@ -187,4 +214,5 @@ export interface AgentConditions {
   next_question: string
   is_complete?: boolean
   next_action?: 'ask_required_conditions' | 'ask_soft_conditions' | 'recommend_listings'
+  top_properties?: AgentPropertyItem[]
 }
